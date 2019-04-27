@@ -1,0 +1,7 @@
+apt-get install python3-pip python3-pil python-smbus i2c-tools
+pip3 install adafruit-circuitpython-ssd1306
+pip3 install flask flask-wtf
+raspi-config
+> Interface
+>> I2C
+>>> enable

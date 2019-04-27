@@ -1,0 +1,30 @@
+<html>
+  <h1>Send my pi a message</h1>
+  <p>
+  Up to 25 characters - it's only a wee screen.
+  </p>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  {% for message in messages %}
+  <p>
+  {{ message }}
+  </p>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+  {% for message in form.message.errors %}
+  <p>
+  {{ "No can do! " + message }}
+  </p>
+  {% endfor %}
+  <form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.message.label }}<br>
+      {{ form.message() }}
+    </p>
+    <p>
+      {{ form.submit() }}
+    </p>
+  </form>
+</html>
