@@ -7,7 +7,6 @@ RUN apt-get install -y nodejs
 RUN curl -O https://wiki.js.org/install.sh
 RUN chmod 755 /install.sh
 RUN /install.sh
-COPY id_wiki /id_wiki
 COPY config.yml /config.yml
 RUN sed -i 's/XXX_KEY_XXX/'$(dd if=/dev/urandom bs=32 count=1 | sha256sum | cut -f 1 -d ' ')'/' config.yml
 ENTRYPOINT node wiki start; cat
