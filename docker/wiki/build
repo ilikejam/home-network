@@ -1,5 +1,4 @@
 #!/bin/bash
 ssh-keygen -f id_wiki -t ed25519 -N ''
-sed 's/XXX_KEY_XXX/'$(dd if=/dev/urandom bs=32 count=1 | sha256sum | cut -f 1 -d ' ')'/' config.yml.template > config.yml
 docker build . -t wiki-js
 echo "Add id_wiki.pub to https://github.com/ilikejam/wiki deploy keys with write access"
