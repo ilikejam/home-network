@@ -1,0 +1,2 @@
+docker network create wiki
+docker run -v wikimongo:/data/db --network wiki --name wikimongo mongo:latest
