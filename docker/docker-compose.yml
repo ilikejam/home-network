@@ -11,7 +11,7 @@ services:
       - wiki
 
   wikifront:
-    build: ./wiki
+    build: ./wikifront
     image: wiki-js
     container_name: wikifront
     restart: always
