@@ -68,7 +68,7 @@ auth:
 sessionSecret: XXX_KEY_XXX
 db: 'mongodb://wikimongo:27017/wiki'
 git:
-  url: 'https://github.com/ilikejam/wiki'
+  url: 'git@github.com:ilikejam/wiki'
   branch: master
   auth:
     type: ssh
