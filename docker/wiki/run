@@ -1,4 +1,6 @@
 #!/bin/bash
 docker network create wiki
+docker network create haproxy
 docker run -d --restart always -v wikimongo:/data/db --network wiki --name wikimongo mongo:latest
 docker run -dit --network wiki -p 3000:3000 --name wikifront wiki-js
+docker network connect haproxy wikifront
