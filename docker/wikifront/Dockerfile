@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 RUN apt-get update && apt-get -y install git curl
 RUN curl -O https://deb.nodesource.com/setup_10.x
@@ -9,6 +9,4 @@ RUN chmod 755 /install.sh
 RUN /install.sh
 COPY config.yml /config.yml
 RUN sed -i 's/XXX_KEY_XXX/'$(dd if=/dev/urandom bs=32 count=1 | sha256sum | cut -f 1 -d ' ')'/' config.yml
-RUN mkdir -p /root/.ssh && chmod 700 /root/.ssh
-RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
 ENTRYPOINT node wiki start; cat
