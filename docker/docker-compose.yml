@@ -6,9 +6,9 @@ services:
     image: mongo:latest
     restart: always
     volumes:
-      wikimongo:/data/db
+      - wikimongo:/data/db
     networks:
-      wiki
+      - wiki
 
   wikifront:
     build: ./wiki
@@ -16,21 +16,21 @@ services:
     container_name: wikifront
     restart: always
     volumes:
-      /root/.ssh/id_wiki:/id_wiki:ro,Z
+      - /root/.ssh/id_wiki:/id_wiki:ro,Z
     networks:
-      wiki
-      haproxy
+      - wiki
+      - haproxy
 
   haproxy:
     container_name: haproxy
     image: haproxy:latest
     restart: always
     volumes:
-      ./haproxy/bind:/usr/local/etc/haproxy:ro,Z
+      - ./haproxy/bind:/usr/local/etc/haproxy:ro,Z
     networks:
-      haproxy
+      - haproxy
     ports:
-      80:8000
+      - 80:8000
     
 volumes:
   wikimongo:
