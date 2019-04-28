@@ -20,6 +20,7 @@ services:
     networks:
       - wiki
       - haproxy
+    tty: true
 
   haproxy:
     container_name: haproxy
