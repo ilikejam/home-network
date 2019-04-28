@@ -1,4 +1,4 @@
 #!/bin/bash
 docker network create wiki
 docker run -d --restart always -v wikimongo:/data/db --network wiki --name wikimongo mongo:latest
-docker run -dit --network wiki -p 3000:3000 wiki-js
+docker run -dit --network wiki -p 3000:3000 --name wikifront wiki-js
