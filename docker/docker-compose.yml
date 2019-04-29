@@ -6,7 +6,8 @@ services:
     image: mongo:latest
     restart: always
     volumes:
-      - wikimongo:/data/db
+      - wikimongo_db:/data/db
+      - wikimongo_configdb:/data/configdb
     networks:
       - wiki
 
@@ -34,7 +35,8 @@ services:
       - 80:8080
     
 volumes:
-  wikimongo:
+  wikimongo_db:
+  wikimongo_configdb:
     
 networks:
   haproxy:
