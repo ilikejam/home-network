@@ -26,6 +26,16 @@
     enabled: yes
     daemon_reload: yes
 
+- name: check-swap
+  shell: swapon -s
+  register: check_swap_result
+  changed_when: false
+
+- name: disable-swap
+  shell: /sbin/dphys-swapfile swapoff
+  when: "check_swap_result.stdout != ''"
+  notify: remove-swap
+
 - name: deinst-pi-crap
   apt:
     state: absent

@@ -1,1 +1,5 @@
 ---
+- name: inst-mosh
+  apt:
+    state: latest
+    name: mosh

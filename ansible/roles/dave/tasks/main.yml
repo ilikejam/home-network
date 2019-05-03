@@ -4,11 +4,17 @@
     name: dave
     shell: /bin/bash
 
-- name: sshkey-dave
+- name: sshkey-dave-mbp
   authorized_key:
     user: dave
     state: present
     key: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFWtS559uXlxxBet3D33//G5cqnnRI2IdpSoVNzOgymk'
+
+- name: sshkey-dave-juice
+  authorized_key:
+    user: dave
+    state: present
+    key: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDdpeazok9BPMEJ4s9gKiWC68DUlb9i0Ci+Pv64SUleuRAJ3FxYEImJTKzyejBPzgG27zTNjSoga32xLdemr8vycojvqP9x8CmNJbkliGrwJR6Wkhotnux2ePe7K+nekoMsVSEX9M8OoxcznQHMilxKvhI5MWvhYsXq/qC+Yeium7RGhA4EBYXGwYdLCbNkLhIy+/S8Tg3ui1y1xB06swk4bmUI2lkk9rk5ypSC6jSwDqudBAO0qcWOjUJoAFkwHv5BEtSxHk90dWAV8Y4NPEvDFRB+Fj66ohG0kFGs8QcBP1SEEido19/BW0zLYFC9AnbMI7f9FejvcNykQzUkdkFRDpYFo0sIqCYBel5n2tFFJf8g/jvOfw7QGw4zy5Nu2Zw9dX9cHC+pZc5bjnGQQ6gdZnEUWg02Qya/vosVp5tqXHWcK/GA+e5cgjwiUkdySza3H4ApeSO7iwlNlf9IHhX3+wS6rou+X2vcURTFJbeFFK07eOyQOBS4ngWV43H8FnSXSPMI3U6S3kMcGVAbhUdUInsCqhdxj0MivFwEHNQUpWuUkxSeJKgb3khnb59M01Cwe6bKbO9C+/Z3/EZRpmWXzBUBrb+XE9XLpcWwe3NxUykI4VGoOpvNS+Q/1v1z7+qg43yQ8D75bQZdZ7fKG4g06rEIzLs5+387RQ2DqLJ1gQ=='
 
 - name: sudo-dave
   lineinfile:

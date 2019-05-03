@@ -1,0 +1,3 @@
+---
+- name: remove-swap
+  shell: /sbin/dphys-swapfile uninstall
