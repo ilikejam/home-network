@@ -1,0 +1,10 @@
+---
+- name: inst-git
+  apt:
+    name: git
+    state: latest
+
+- name: checkout-home-network-repo
+  git:
+    repo: https://github.com/ilikejam/home-network.git
+    dest: "{{ config_repo }}"

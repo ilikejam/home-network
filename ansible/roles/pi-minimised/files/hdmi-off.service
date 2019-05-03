@@ -1,0 +1,10 @@
+[Unit]
+Description=Disable HDMI
+DefaultDependencies=no
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/tvservice -o
+
+[Install]
+WantedBy=sysinit.target

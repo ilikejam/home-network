@@ -1,0 +1,11 @@
+---
+- hosts: pi
+  pre_tasks:
+    - include_role:
+        name: apt-update
+  roles:
+    - pi-minimised
+    - home-network-repo
+    - pi-oled
+    - pi-bastion
+

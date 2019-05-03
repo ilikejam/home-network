@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 User=display
-Environment=FLASK_APP=/home/display/display/display.py
+Environment=FLASK_APP={{ config_repo }}/pi/display/display.py
 ExecStart=/usr/local/bin/flask run --host=0.0.0.0
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process

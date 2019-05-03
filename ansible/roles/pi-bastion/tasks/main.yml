@@ -1,0 +1,23 @@
+---
+- name: inst-cockpit
+  apt:
+    name: cockpit
+    state: latest
+
+- name: service-cockpit
+  service:
+    name: cockpit
+    state: started
+    enabled: yes
+
+- name: user-cockpit
+  user:
+    name: cockpit
+    home: /home/cockpit
+    shell: /bin/bash
+
+- name: sudo-cockpit
+  lineinfile:
+    path: /etc/sudoers
+    regexp: '^cockpit '
+    line: 'cockpit ALL=(ALL) /usr/bin/cockpit-bridge --privileged'

@@ -1,0 +1,3 @@
+---
+- import_playbook: profiles/pi.yml
+- import_playbook: profiles/all.yml

@@ -1,0 +1,6 @@
+---
+- include_tasks: debian.yml
+  when: ansible_facts['os_family'] == "Debian"
+
+- include_tasks: pi.yml
+  when: ansible_facts['architecture'] == "armv7l"

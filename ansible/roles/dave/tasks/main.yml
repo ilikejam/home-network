@@ -1,0 +1,17 @@
+---
+- name: user-dave
+  user:
+    name: dave
+    shell: /bin/bash
+
+- name: sshkey-dave
+  authorized_key:
+    user: dave
+    state: present
+    key: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFWtS559uXlxxBet3D33//G5cqnnRI2IdpSoVNzOgymk'
+
+- name: sudo-dave
+  lineinfile:
+    path: /etc/sudoers
+    regexp: '^dave '
+    line: 'dave ALL=(ALL) NOPASSWD: ALL'

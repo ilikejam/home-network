@@ -1,0 +1,10 @@
+---
+- name: inst-tools-debian
+  apt:
+    state: latest
+    name:
+      - lsof
+      - iftop
+      - iotop
+      - telnet
+      - dnsutils

@@ -1,0 +1,38 @@
+---
+- name: slaac-hardware
+  lineinfile:
+    path: /etc/dhcpcd.conf
+    regexp: '^slaac'
+    line: 'slaac hardware'
+
+- name: disable-wifi
+  lineinfile:
+    path: /boot/config.txt
+    line: dtoverlay=pi3-disable-wifi
+
+- name: disable-bt
+  lineinfile:
+    path: /boot/config.txt
+    line: dtoverlay=pi3-disable-bt
+
+- name: unitfile-hdmi-off
+  copy:
+    src: hdmi-off.service
+    dest: /etc/systemd/system/hdmi-off.service
+
+- name: service-hdmi-off
+  systemd:
+    name: hdmi-off
+    enabled: yes
+    daemon_reload: yes
+
+- name: deinst-pi-crap
+  apt:
+    state: absent
+    purge: yes
+    name:
+      - wpasupplicant
+      - bluez
+      - bluez-firmware
+      - avahi-daemon
+      - triggerhappy
