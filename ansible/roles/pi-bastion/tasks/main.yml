@@ -15,9 +15,3 @@
     name: cockpit
     home: /home/cockpit
     shell: /bin/bash
-
-- name: sudo-cockpit
-  lineinfile:
-    path: /etc/sudoers
-    regexp: '^cockpit '
-    line: 'cockpit ALL=(ALL) /usr/bin/cockpit-bridge --privileged'
