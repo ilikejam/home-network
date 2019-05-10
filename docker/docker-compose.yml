@@ -23,6 +23,16 @@ services:
       - haproxy
     tty: true
 
+  webmisc:
+    build: ./webmisc
+    image: webmisc
+    container_name: webmisc
+    restart: always
+    volumes:
+      - ./webmisc/bind:/var/tmp/serve:ro,Z
+    networks:
+      - haproxy
+
   haproxy:
     container_name: haproxy
     image: haproxy:latest
