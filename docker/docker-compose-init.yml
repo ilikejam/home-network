@@ -13,9 +13,9 @@ services:
 
   wikifront:
     entrypoint: node wiki configure
-    build: ./wikifront
+    build: ./wikifront-init
     image: wiki-js
-    container_name: wikifront
+    container_name: wikifront-init
     restart: always
     volumes:
       - /root/.ssh/id_wiki:/id_wiki:ro,Z
@@ -29,12 +29,23 @@ services:
     image: haproxy:latest
     restart: always
     volumes:
-      - ./haproxy/bind:/usr/local/etc/haproxy:ro,Z
+      - ./haproxy/bind-init:/usr/local/etc/haproxy:ro,Z
     networks:
       - haproxy
     ports:
       - 80:8080
     user: '1001'
+
+  letsencrypt:
+    build: ./letsencrypt
+    image: letsencrypt
+    container_name: letsencrypt
+    restart: no
+    volumes:
+      - letsencrypt_etc:/etc/letsencrypt
+    networks:
+      - haproxy
+    command: bash -c 'sleep 10; certbot certonly --standalone --preferred-challenges http-01 --http-01-port 8000 --agree-tos --non-interactive -m dave@davidstark.name -d "wiki.davidstark.name" -d "pi.davidstark.name"; cat /etc/letsencrypt/live/wiki.davidstark.name/fullchain.pem /etc/letsencrypt/live/wiki.davidstark.name/privkey.pem > /etc/letsencrypt/haproxy.pem'
     
 volumes:
   wikimongo_db:
