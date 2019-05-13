@@ -1,0 +1,5 @@
+---
+- name: service-cockpit-restart
+  systemd:
+    name: cockpit
+    state: restarted

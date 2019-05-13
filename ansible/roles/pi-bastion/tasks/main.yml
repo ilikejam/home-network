@@ -4,6 +4,12 @@
     name: cockpit
     state: latest
 
+- name: etc-cockpit-cockpit.conf
+  copy:
+    src: cockpit.conf
+    dest: /etc/cockpit/cockpit.conf
+  notify: service-cockpit-restart
+
 - name: service-cockpit
   service:
     name: cockpit
