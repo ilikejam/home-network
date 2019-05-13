@@ -1,5 +1,5 @@
 title: Dave's Wiki
-host: 'http://wiki.davidstark.name'
+host: 'https://wiki.davidstark.name'
 port: 3000
 paths:
   repo: ./repo

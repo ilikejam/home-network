@@ -1,3 +1,0 @@
-#!/bin/bash
-docker network create haproxy
-docker run -dit -v "$(pwd)"/bind:/usr/local/etc/haproxy:ro,Z -p 80:8080 --restart always --network haproxy haproxy
