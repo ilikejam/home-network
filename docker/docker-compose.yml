@@ -52,7 +52,7 @@ services:
     restart: always
     volumes:
       - ./haproxy/bind:/usr/local/etc/haproxy:ro,Z
-      - letsencrypt_etc:/etc/letsencrypt
+      - letsencrypt_etc:/etc/letsencrypt:ro
     networks:
       - haproxy
     ports:

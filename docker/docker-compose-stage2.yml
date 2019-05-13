@@ -29,7 +29,8 @@ services:
     image: haproxy:latest
     restart: "no"
     volumes:
-      - ./haproxy/bind-init:/usr/local/etc/haproxy:ro,Z
+      - ./haproxy/bind:/usr/local/etc/haproxy:ro,Z
+      - letsencrypt_etc:/etc/letsencrypt:ro
     networks:
       - haproxy
     ports:
