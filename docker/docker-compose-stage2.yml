@@ -13,7 +13,7 @@ services:
 
   wikifront:
     command: bash -c 'cd /wiki && node wiki configure'
-    build: ./wikifront-init
+    build: ./wikifront
     image: wiki-js
     container_name: wikifront-init
     restart: "no"

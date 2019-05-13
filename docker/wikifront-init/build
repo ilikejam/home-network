@@ -1,4 +1,0 @@
-#!/bin/bash
-[ ! -f /root/.ssh/id_wiki ] && ssh-keygen -f /root/.ssh/id_wiki -t ed25519 -N ''
-docker build . -t wiki-js
-echo "Add /root/.ssh/id_wiki.pub to https://github.com/ilikejam/wiki deploy keys with write access"
