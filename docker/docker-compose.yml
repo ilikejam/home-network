@@ -3,7 +3,7 @@ version: '3'
 services:
   wikimongo:
     container_name: wikimongo
-    image: mongo:latest
+    image: mongo:4
     restart: always
     volumes:
       - wikimongo_db:/data/db
@@ -48,7 +48,7 @@ services:
 
   haproxy:
     container_name: haproxy
-    image: haproxy:latest
+    image: haproxy:2.0
     restart: always
     volumes:
       - ./haproxy/bind:/usr/local/etc/haproxy:ro,Z
