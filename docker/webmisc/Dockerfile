@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3.7
 RUN groupadd webmisc && useradd -g webmisc webmisc
 
 USER webmisc
