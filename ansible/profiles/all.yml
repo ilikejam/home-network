@@ -5,6 +5,8 @@
     - name: set-hostname
       hostname:
         name: "{{ hostname }}"
+    - include_role:
+        name: apt-update
 
   roles:
     - global-handlers

@@ -4,6 +4,7 @@
     name: dirmngr
     install_recommends: yes
     update_cache: yes
+  when: ansible_facts['os_family'] == "Debian"
   
 - name: stretch-backports-key-8B48AD6246925553
   apt_key:
@@ -25,3 +26,4 @@
 - name: apt-get-update
   apt:
     update_cache: yes
+  when: ansible_facts['os_family'] == "Debian"

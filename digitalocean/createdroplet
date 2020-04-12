@@ -26,7 +26,8 @@ while getopts ':hn:r:i:s:t:' opt; do
             TAG="$OPTARG"
             ;;
         \?|h)
-            echo "Usage: $0 -t <tag> [-n <name>] [-r <region>] [-i <image>] [-s <size>]" >&2
+            echo "Usage: $0 [-t <tag>] [-n <name>] [-r <region>] [-i <image>] [-s <size>]" >&2
+            exit 1
             ;;
     esac
 done
