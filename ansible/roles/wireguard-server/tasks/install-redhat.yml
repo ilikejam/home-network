@@ -1,0 +1,9 @@
+---
+- name: inst-wireguard
+  dnf:
+    state: present
+    name:
+      - kmod-wireguard
+      - wireguard-tools
+      - tcpdump
+      - iptables

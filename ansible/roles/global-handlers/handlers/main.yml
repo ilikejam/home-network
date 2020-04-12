@@ -2,4 +2,3 @@
 - name: reboot-host
   listen: reboot-host-now
   reboot:
-    

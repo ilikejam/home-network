@@ -1,12 +1,12 @@
 ---
-- name: inst-tools-debian
-  apt:
+- name: inst-tools-redhat
+  dnf:
     state: present
     name:
       - lsof
       - iftop
       - iotop
       - telnet
-      - dnsutils
+      - bind-utils
       - tcpdump
       - strace

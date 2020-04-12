@@ -1,0 +1,7 @@
+---
+- name: inst-extra-repos-redhat
+  dnf:
+    state: present
+    name:
+      - elrepo-release
+      - epel-release

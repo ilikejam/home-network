@@ -1,5 +1,5 @@
 ---
-- hosts: pi
+- hosts: pi.davidstark.name
   pre_tasks:
     - include_role:
         name: apt-update
