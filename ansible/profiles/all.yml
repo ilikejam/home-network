@@ -4,9 +4,11 @@
   pre_tasks:
     - name: set-hostname
       hostname:
-        name: "{{ inventory_hostname }}"
+        name: "{{ hostname }}"
 
   roles:
+    - global-handlers
     - repos
     - dave
+    - root
     - linux-tools

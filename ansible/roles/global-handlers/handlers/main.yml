@@ -2,3 +2,9 @@
 - name: reboot-host
   listen: reboot-host-now
   reboot:
+
+- name: ssh-restart
+  listen: ssh-changed
+  service:
+    name: "{{ ssh_service }}"
+    state: restarted

@@ -1,0 +1,196 @@
+#!/usr/bin/env bash
+# Create a DigitalOcean droplet
+set -e
+
+TAG=init # init tag for ansible init config
+SIZE=s-1vcpu-1gb
+REGION=lon1
+IMAGE=centos-8-x64
+NAME=temp-$(TZ=UTC date +%Y%m%d%H%M%S)
+KEYID=24135599
+
+error() {
+    echo "$0: ERROR: $1" >&2
+    exit 1
+}
+
+info() {
+    echo "$0: INFO: $1" >&2
+}
+
+chkcomm() {
+    command -v "$1" > /dev/null
+}
+
+listregions() {
+    curl -s -f -H "Authorization: Bearer $DO_API_TOKEN" "https://api.digitalocean.com/v2/regions?per_page=200" | \
+        jq -r '.regions[] | select(.available == true) | "\(.name): \(.slug)"' | sort
+}
+
+listimages() {
+    curl -s -f -H "Authorization: Bearer $DO_API_TOKEN" "https://api.digitalocean.com/v2/images?per_page=200" | \
+        jq -r '.images[].slug' | grep -v '^null$' | sort
+}
+
+listsizes() {
+    curl -s -f -H "Authorization: Bearer $DO_API_TOKEN" "https://api.digitalocean.com/v2/sizes?per_page=200" | \
+        jq -r '.sizes[].slug' | sort
+}
+
+deletedroplets() {
+    [[ -z "$DELETE" ]] && error "No droplets specified to delete - use ID or \"all\"."
+    [[ "$TAG" == "all" ]] && error "Refusing to run delete with tag \"all\"."
+    if [[ "$DELETE" == "all" ]]; then
+        DROPLETS="$(curl -s -f -H "Authorization: Bearer $DO_API_TOKEN" "https://api.digitalocean.com/v2/droplets?tag_name=$TAG&?per_page=200" | jq '.droplets[].id')"
+        [[ -z $DROPLETS ]] && error "No droplets to delete"
+    else
+        DROPLETS="$DELETE"
+    fi
+    for DROPLET in $DROPLETS; do
+        curl -s -f -X DELETE -H "Authorization: Bearer $DO_API_TOKEN" "https://api.digitalocean.com/v2/droplets/$DROPLET" || \
+            error "Could not delete droplet $DROPLET - check the DO dashboard to avoid expense"
+        echo "$DROPLET"
+    done
+}
+
+printdroplets() {
+    [[ "$TAG" == "all" ]] && URLEND="" || URLEND="&tag_name=$TAG"
+    curl -s -f -H "Authorization: Bearer $DO_API_TOKEN" "https://api.digitalocean.com/v2/droplets?per_page=200$URLEND" | \
+        jq -r '.droplets[] | "\(.id) \(.networks.v4[].ip_address) \(.name) \(.region.slug) \(.image.slug) \(.size.slug) \(.tags | join(" "))"' | sort
+}
+
+listdroplets() {
+    [[ "$TAG" == "all" ]] && URLEND="" || URLEND="&tag_name=$TAG"
+    curl -s -f -H "Authorization: Bearer $DO_API_TOKEN" "https://api.digitalocean.com/v2/droplets?per_page=200$URLEND" | \
+        jq -r '.droplets[].id' | sort
+}
+
+addtag() {
+    curl -s -f -X POST -o /dev/null \
+         -H "Content-Type: application/json" \
+         -H "Authorization: Bearer $DO_API_TOKEN" \
+         "https://api.digitalocean.com/v2/tags" \
+         -d '{"name": "'"$TAG"'"}'
+    curl -s -f -X POST \
+         -H "Content-Type: application/json" \
+         -H "Authorization: Bearer $DO_API_TOKEN" \
+         "https://api.digitalocean.com/v2/tags/$TAG/resources" \
+         -d '{"resources": [ { "resource_id": "'"$DROPLET"'", "resource_type": "droplet" } ] }'
+    curl -s -f -X DELETE \
+         -H "Content-Type: application/json" \
+         -H "Authorization: Bearer $DO_API_TOKEN" \
+         "https://api.digitalocean.com/v2/tags/init/resources" \
+         -d '{"resources": [ { "resource_id": "'"$DROPLET"'", "resource_type": "droplet" } ] }'
+    echo "$DROPLET"
+}
+
+createdroplet() {
+    trap 'error "$0 exited unexpectedly. Check the DO dashboard to avoid expense."' EXIT
+    DROPLETID=$(curl -s -f -X POST \
+                     -H "Content-Type: application/json" \
+                     -H "Authorization: Bearer $DO_API_TOKEN" \
+                     -d \
+                     '{
+                     "name":"'"$NAME"'",
+                     "region":"'"$REGION"'",
+                     "size":"'"$SIZE"'",
+                     "image":"'"$IMAGE"'",
+                     "ssh_keys":['"$KEYID"'],
+                     "backups":false,
+                     "ipv6":true,
+                     "user_data":null,
+                     "private_networking":null,
+                     "volumes": null,
+                     "tags":["'"$TAG"'"]
+                     }' \
+                         "https://api.digitalocean.com/v2/droplets" | \
+                         jq .droplet.id)
+    [[ -z "$DROPLETID" ]] && error "Could not get ID for new droplet."
+    info "Droplet ID: $DROPLETID"
+    i=0
+    while [[ $i -lt 6 ]]; do
+        DROPLETIP=$(curl -s -f -H "Authorization: Bearer $DO_API_TOKEN" "https://api.digitalocean.com/v2/droplets/$DROPLETID" | \
+                        jq -r '.droplet.networks.v4[].ip_address')
+        [[ -n "$DROPLETIP" ]] && break
+        (( i++ ))
+        sleep 10
+    done
+    if [[ -z "$DROPLETIP" ]] || [[ "$DROPLETIP" != *.*.*.* ]]; then
+        error "Could not get IP for droplet $DROPLET."
+    fi
+    trap - EXIT
+    info "Droplet name: $NAME"
+    info "Droplet IP: $DROPLETIP"
+    echo "$DROPLETID"
+}
+
+# --- Go! --- #
+
+COMMAND=listdroplets
+while getopts ':hRISpca:n:r:i:s:t:d:' opt; do
+    case $opt in
+        R)
+            COMMAND=listregions
+            ;;
+        I)
+            COMMAND=listimages
+            ;;
+        S)
+            COMMAND=listsizes
+            ;;
+        p)
+            COMMAND=printdroplets
+            ;;
+        c)
+            COMMAND=createdroplet
+            ;;
+        a)
+            COMMAND=addtag
+            DROPLET="$OPTARG"
+            ;;
+        n)
+            NAME="$OPTARG"
+            ;;
+        r)
+            REGION="$OPTARG"
+            ;;
+        i)
+            IMAGE="$OPTARG"
+            ;;
+        s)
+            SIZE="$OPTARG"
+            ;;
+        t)
+            TAG="$OPTARG"
+            ;;
+        d)
+            COMMAND=deletedroplets
+            DELETE="$OPTARG"
+            ;;
+        \?|h)
+            cat <<_EOF >&2
+Usage: $0 [-R|-S|-c|-a <ID>|-p|-d <all|ID>] [-n <name>] [-r <region>] [-i <image>] [-s <size>] [-t <tag>]
+-R : list regions
+-I : list images
+-S : list sizes
+-c : create droplet
+-a <dropletid> : add tag (specify -t <tag>)
+-p : print droplets (long listing)
+-d "all"|<dropletid> : delete droplet(s)
+-n <name> : use name
+-r <region> : use region
+-i <image> : use image
+-s <size> : use size
+-t <tag> : use tag
+Run with no command args to list dropletIDs
+_EOF
+            exit 1
+            ;;
+    esac
+done
+
+chkcomm jq || error "jq command not found."
+chkcomm curl || error "curl command not found."
+[[ -z "$DO_API_TOKEN" ]] && error "Environment variable DO_API_TOKEN not set."
+
+$COMMAND

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+
+[[ -z $1 ]] && echo "Supply region as \$1 - run 'droplet -R' to see regions"
+DROPLET="$(createdroplet -t vpn_server -r "$1" -n "vpn-$1")"
+IP="$(droplet -p -t vpn_server | grep "^$DROPLET " | awk '{print $2}')"
+echo -n "$IP:"
+ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "$IP" "grep '^ListenPort' /etc/wireguard/wg0.conf | awk '{print \$NF}' | tr '\n' ' '; cat /etc/wireguard/publickey" 2>/dev/null

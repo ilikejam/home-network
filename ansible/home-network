@@ -1,6 +1,3 @@
 [home]
 pi.davidstark.name
 
-[do]
-network-a ansible_host=206.189.126.226
-docker-a ansible_host=167.99.198.198
