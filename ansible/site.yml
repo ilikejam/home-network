@@ -1,4 +1,5 @@
 ---
 - import_playbook: profiles/all.yml
 - import_playbook: profiles/pi.yml
+- import_playbook: profiles/permanent.yml
 - import_playbook: profiles/vpn-server.yml

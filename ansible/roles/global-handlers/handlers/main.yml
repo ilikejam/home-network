@@ -1,10 +1,16 @@
 ---
-- name: reboot-host
-  listen: reboot-host-now
-  reboot:
-
 - name: ssh-restart
   listen: ssh-changed
   service:
     name: "{{ ssh_service }}"
     state: restarted
+
+- name: grub-rebuild
+  listen: kernel-changed
+  command:
+    cmd: /usr/sbin/grub2-mkconfig -o /boot/grub2/grub.cfg
+  notify: reboot
+
+- name: reboot-host-now
+  listen: reboot
+  reboot:

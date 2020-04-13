@@ -12,6 +12,8 @@ info() {
     echo "$0: INFO: $1" >&2
 }
 
+TAGS=()
+RUNSITE=false
 while getopts ':hn:r:i:s:t:' opt; do
     case $opt in
         n)
@@ -27,7 +29,8 @@ while getopts ':hn:r:i:s:t:' opt; do
             SIZE="$OPTARG"
             ;;
         t)
-            TAG="$OPTARG"
+            TAGS+=("$OPTARG")
+            RUNSITE=true
             ;;
         \?|h)
             echo "Usage: $0 [-t <tag>] [-n <name>] [-r <region>] [-i <image>] [-s <size>]" >&2
@@ -42,19 +45,21 @@ CARGS=( )
 [[ -n "$IMAGE" ]]  && CARGS+=("-i" "$IMAGE")
 [[ -n "$SIZE" ]]   && CARGS+=("-s" "$SIZE")
 
-
+trap 'error "$0 exited unexpectedly. Check the DO dashboard to avoid expense."' EXIT
 DROPLET="$(droplet -c -t init "${CARGS[@]}")"
 [[ -z "$DROPLET" ]] && error "Could not create droplet"
 IP=$(droplet -p -t init | grep "^$DROPLET " | awk '{print $2}')
 [[ -z "$IP" ]] && error "Could not get IP for droplet $DROPLET"
+
 until ssh -o ConnectTimeout=3 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@"$IP" "true" &> /dev/null; do
     sleep 1
 done
 cd "$ANSIBLE"
 ansible-playbook -i digital_ocean.py -l "$IP" init.yml >&2
-if [[ -n "$TAG" ]]; then
+for TAG in "${TAGS[@]}"; do
     droplet -a "$DROPLET" -t "$TAG" >&2
-    ansible-playbook -i digital_ocean.py -l "$IP" site.yml >&2
-fi
+done
+$RUNSITE && ansible-playbook -i digital_ocean.py -l "$IP" site.yml >&2
 info "IP: $IP"
 echo "$DROPLET"
+trap - EXIT
