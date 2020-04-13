@@ -8,6 +8,10 @@ error() {
     exit 1
 }
 
+info() {
+    echo "$0: INFO: $1" >&2
+}
+
 while getopts ':hn:r:i:s:t:' opt; do
     case $opt in
         n)
@@ -47,9 +51,10 @@ until ssh -o ConnectTimeout=3 -o UserKnownHostsFile=/dev/null -o StrictHostKeyCh
     sleep 1
 done
 cd "$ANSIBLE"
-ansible-playbook -i digital_ocean.py -l "$IP" site.yml >&2
+ansible-playbook -i digital_ocean.py -l "$IP" init.yml >&2
 if [[ -n "$TAG" ]]; then
     droplet -a "$DROPLET" -t "$TAG" >&2
     ansible-playbook -i digital_ocean.py -l "$IP" site.yml >&2
 fi
+info "IP: $IP"
 echo "$DROPLET"
