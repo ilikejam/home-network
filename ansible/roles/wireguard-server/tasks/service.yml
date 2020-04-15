@@ -4,3 +4,8 @@
     name: wg-quick@wg0
     state: started
     enabled: yes
+
+- name: service-iptables
+  service:
+    name: iptables
+    enabled: yes

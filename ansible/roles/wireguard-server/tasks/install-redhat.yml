@@ -7,3 +7,4 @@
       - wireguard-tools
       - tcpdump
       - iptables
+      - iptables-services

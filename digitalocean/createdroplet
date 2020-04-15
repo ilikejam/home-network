@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Create a droplet and configure it
-ANSIBLE=/Users/dave/Documents/github/home-network/ansible
+ANSIBLE=/Users/dave/github/home-network/ansible
 set -e
 
 error() {

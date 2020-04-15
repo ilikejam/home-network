@@ -11,6 +11,11 @@
     cmd: /usr/sbin/grub2-mkconfig -o /boot/grub2/grub.cfg
   notify: reboot
 
+- name: iptables-save
+  listen: iptables-changed
+  command:
+    cmd: service iptables save
+
 - name: reboot-host-now
   listen: reboot
   reboot:

@@ -1,0 +1,6 @@
+---
+- name: iptables-forward-reject
+  iptables:
+    chain: FORWARD
+    reject_with: icmp-port-unreachable
+  notify: iptables-changed
