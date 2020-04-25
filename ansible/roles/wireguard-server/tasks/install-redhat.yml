@@ -8,3 +8,4 @@
       - tcpdump
       - iptables
       - iptables-services
+      - qrencode

@@ -1,0 +1,8 @@
+---
+- name: script-wggenconf
+  copy:
+    src: wggenconf
+    dest: /root/wggenconf
+    owner: root
+    group: root
+    mode: '0700'
