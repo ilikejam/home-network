@@ -41,6 +41,11 @@ listsizes() {
         jq -r '.sizes[].slug' | sort
 }
 
+listtags() {
+    curl -s -f -H "Authorization: Bearer $DO_API_TOKEN" "https://api.digitalocean.com/v2/tags?per_page=200" | \
+        jq -r '.tags[] | select(.resources.count > 0) | "\(.name) \(.resources.droplets.count)"'
+}
+
 deletedroplets() {
     [[ -z "$DELETE" ]] && error "No droplets specified to delete - use ID or \"all\"."
     [[ "$TAG" == "all" ]] && error "Refusing to run delete with tag \"all\"."
@@ -131,7 +136,7 @@ createdroplet() {
 # --- Go! --- #
 
 COMMAND=listdroplets
-while getopts ':hRISpca:n:r:i:s:t:d:' opt; do
+while getopts ':hRISTpca:n:r:i:s:t:d:' opt; do
     case $opt in
         R)
             COMMAND=listregions
@@ -141,6 +146,9 @@ while getopts ':hRISpca:n:r:i:s:t:d:' opt; do
             ;;
         S)
             COMMAND=listsizes
+            ;;
+        T)
+            COMMAND=listtags
             ;;
         p)
             COMMAND=printdroplets
@@ -174,10 +182,11 @@ while getopts ':hRISpca:n:r:i:s:t:d:' opt; do
             ;;
         \?|h)
             cat <<_EOF >&2
-Usage: $0 [-R|-S|-c|-a <ID>|-p|-d <all|ID>] [-n <name>] [-r <region>] [-i <image>] [-s <size>] [-t <tag>]
+Usage: $0 [-R|-I|-S|-T|-c|-a <ID>|-p|-d <all|ID>] [-n <name>] [-r <region>] [-i <image>] [-s <size>] [-t <tag>]
 -R : list regions
 -I : list images
 -S : list sizes
+-T : list active tags
 -c : create droplet
 -a <dropletid> : add tag (specify -t <tag>)
 -p : print droplets (long listing)
