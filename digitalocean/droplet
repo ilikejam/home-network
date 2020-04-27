@@ -46,32 +46,17 @@ listtags() {
         jq -r '.tags[] | select(.resources.count > 0) | "\(.name) \(.resources.droplets.count)"'
 }
 
-deletedroplets() {
-    [[ -z "$DELETE" ]] && error "No droplets specified to delete - use ID or \"all\"."
-    [[ "$TAG" == "all" ]] && error "Refusing to run delete with tag \"all\"."
-    if [[ "$DELETE" == "all" ]]; then
-        DROPLETS="$(curl -s -f -H "Authorization: Bearer $DO_API_TOKEN" "https://api.digitalocean.com/v2/droplets?tag_name=$TAG&?per_page=200" | jq '.droplets[].id')"
-        [[ -z $DROPLETS ]] && error "No droplets to delete"
-    else
-        DROPLETS="$DELETE"
-    fi
-    for DROPLET in $DROPLETS; do
-        curl -s -f -X DELETE -H "Authorization: Bearer $DO_API_TOKEN" "https://api.digitalocean.com/v2/droplets/$DROPLET" || \
-            error "Could not delete droplet $DROPLET - check the DO dashboard to avoid expense"
-        echo "$DROPLET"
-    done
+deletedroplet() {
+    [[ -z "$DELETE" ]] && error "No droplets specified to delete - use ID."
+    curl -s -f -X DELETE -H "Authorization: Bearer $DO_API_TOKEN" "https://api.digitalocean.com/v2/droplets/$DELETE" || \
+        error "Could not delete droplet $DELETE - check the DO dashboard to avoid expense"
+    echo "$DELETE"
 }
 
 printdroplets() {
     [[ "$PTAG" == "all" ]] && URLEND="" || URLEND="&tag_name=$TAG"
     curl -s -f -H "Authorization: Bearer $DO_API_TOKEN" "https://api.digitalocean.com/v2/droplets?per_page=200$URLEND" | \
         jq -r '.droplets[] | "\(.id) \(.networks.v4[].ip_address) \(.name) \(.region.slug) \(.image.slug) \(.size.slug) \(.tags | join(" "))"' | sort
-}
-
-listdroplets() {
-    [[ "$PTAG" == "all" ]] && URLEND="" || URLEND="&tag_name=$TAG"
-    curl -s -f -H "Authorization: Bearer $DO_API_TOKEN" "https://api.digitalocean.com/v2/droplets?per_page=200$URLEND" | \
-        jq -r '.droplets[].id' | sort
 }
 
 addtag() {
@@ -135,7 +120,7 @@ createdroplet() {
 
 # --- Go! --- #
 
-COMMAND=listdroplets
+unset COMMAND
 while getopts ':hRISTpca:n:r:i:s:t:d:' opt; do
     case $opt in
         R)
@@ -177,12 +162,12 @@ while getopts ':hRISTpca:n:r:i:s:t:d:' opt; do
             PTAG="$OPTARG"
             ;;
         d)
-            COMMAND=deletedroplets
+            COMMAND=deletedroplet
             DELETE="$OPTARG"
             ;;
         \?|h)
             cat <<_EOF >&2
-Usage: $0 [-R|-I|-S|-T|-c|-a <ID>|-p|-d <all|ID>] [-n <name>] [-r <region>] [-i <image>] [-s <size>] [-t <tag>]
+Usage: $0 [-R|-I|-S|-T|-c|-a <ID>|-p|-d <ID>] [-n <name>] [-r <region>] [-i <image>] [-s <size>] [-t <tag>]
 -R : list regions
 -I : list images
 -S : list sizes
@@ -190,13 +175,12 @@ Usage: $0 [-R|-I|-S|-T|-c|-a <ID>|-p|-d <all|ID>] [-n <name>] [-r <region>] [-i 
 -c : create droplet
 -a <dropletid> : add tag (specify -t <tag>)
 -p : print droplets (long listing)
--d "all"|<dropletid> : delete droplet(s)
+-d <dropletid> : delete droplet
 -n <name> : use name
 -r <region> : use region
 -i <image> : use image
 -s <size> : use size
 -t <tag> : use tag
-Run with no command args to list dropletIDs
 _EOF
             exit 1
             ;;
@@ -205,6 +189,7 @@ done
 
 chkcomm jq || error "jq command not found."
 chkcomm curl || error "curl command not found."
+[[ -z "$COMMAND" ]] && error "No command specified."
 [[ -z "$DO_API_TOKEN" ]] && error "Environment variable DO_API_TOKEN not set."
 
 $COMMAND

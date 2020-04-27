@@ -10,6 +10,12 @@
     state: present
     key: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFWtS559uXlxxBet3D33//G5cqnnRI2IdpSoVNzOgymk'
 
+- name: sshkey-dave-work
+  authorized_key:
+    user: dave
+    state: present
+    key: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDQjXpQ7wpDnn2TCXyCl9r6dX2+mUMjlgPKtjN4y0/ASQIZVAUkqWmWmr0gSmLyixfHQGsNqCrt5U175tX8TzFct6kx4til7KRTa09PEFlJ1f2k63l5Prp2hSGE7con3XOtWHKDjwQ9NHwEq+DVldF8TTuYdpnID82Wa+DgRVWiU5cwj/ky0EzYkOKpsJXKzZIpAVoEVY5K1RArktU/sWfaWhyQAw5eAlg2Ql4JmVePOL3lcDA1ei1XAqpQHtKKUSOF8o65y7WATdEpNKYNC9WkthplK63id5+zFWQ3hNMjY4SBSm3r7ZbRFBKyeLRjaE60QmU2UGW2v8vQhf7GpmBV+sVc6xKrwZ9kR0jnd8QXuzlRVHW3jAyWuKO8+KaR4XW4EQM1LHhKYFQCpbaaDqfYG9bN8jSG91Da8i/QcWGmxVLKpJrWfx5k7zT3OXTMp1gxOZSeWuLxwEi44TkT+7+/0JBJ2OrammPRzBTZWeNmwmD4H48KLtNTPD4s8n5TdmbXSBj85gIIhYpxUr+MkNTOU/5LmkTh0ojhtpqZX+02iQkuzsiDZ4JqbF+EfL6N8LZqMuuJsl3dsulAN7GzyPAygp0WXHFdtSOzMfqY3KU+n+3QRXdTyBCGrvbDNPNxdLN5B4mrN5GUC84oSFVbg7hbsFmbra7YjD3t2ohG0tkMMQ=='
+
 - name: sshkey-dave-juice
   authorized_key:
     user: dave
