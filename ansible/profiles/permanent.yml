@@ -3,3 +3,4 @@
   roles:
     - global-handlers
     - crashkernel
+    - home-network-repo

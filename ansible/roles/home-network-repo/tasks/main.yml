@@ -1,8 +1,8 @@
 ---
 - name: inst-git
-  apt:
+  package:
     name: git
-    state: latest
+    state: present
 
 - name: checkout-home-network-repo
   git:
