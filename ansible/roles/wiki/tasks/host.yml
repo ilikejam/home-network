@@ -1,0 +1,8 @@
+---
+- name: file-github-secret
+  copy:
+    dest: "{{ github_webhook_secret_path }}"
+    content: "{{ lookup('env','GH_WEBHOOK_SECRET') }}"
+    mode: '0400'
+    owner: "{{ github_webhook_uid }}"
+    group: "{{ github_webhook_uid }}"

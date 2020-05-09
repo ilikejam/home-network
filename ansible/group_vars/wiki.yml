@@ -1,0 +1,4 @@
+---
+github_webhook_secret_path: "/etc/gh-webhook-secret"
+github_webhook_uid: "2000"
+github_webhook_gid: "2000"
