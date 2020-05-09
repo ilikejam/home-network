@@ -1,3 +1,0 @@
-[submodule "docker/github-webhook"]
-	path = docker/github-webhook
-	url = https://github.com/ilikejam/python-github-webhook.git
