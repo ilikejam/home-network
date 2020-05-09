@@ -46,8 +46,8 @@ CARGS=( )
 [[ -n "$IMAGE" ]]  && CARGS+=("-i" "$IMAGE")
 [[ -n "$SIZE" ]]   && CARGS+=("-s" "$SIZE")
 
-trap 'error "$0 exited unexpectedly. Check the DO dashboard to avoid expense."' EXIT
 DROPLET="$(droplet -c -t init "${CARGS[@]}")"
+trap 'error "$0 exited unexpectedly. Check the DO dashboard to avoid expense. Droplet ID: $DROPLET"' EXIT
 [[ -z "$DROPLET" ]] && error "Could not create droplet"
 IP=$(droplet -p -t init | grep "^$DROPLET " | awk '{print $2}')
 [[ -z "$IP" ]] && error "Could not get IP for droplet $DROPLET"
