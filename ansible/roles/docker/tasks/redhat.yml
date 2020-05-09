@@ -1,0 +1,26 @@
+---
+- name: yum-repo-docker-ce
+  command:
+    cmd: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    creates: /etc/yum.repos.d/docker-ce.repo
+
+- name: install-docker-ce
+  package:
+    state: present
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+
+- name: install-docker-compose
+  get_url:
+    url: https://github.com/docker/compose/releases/download/1.25.5/docker-compose-Linux-x86_64
+    dest: /usr/local/bin/docker-compose
+    mode: '0755'
+    checksum: sha256:1cb7ecccc17c8d5f1888f9e2b3211b07e35c86d0010a6c0f711fe65ef5b69528
+
+- name: service-docker
+  service:
+    name: docker
+    state: started
+    enabled: true

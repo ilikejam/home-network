@@ -1,6 +1,6 @@
 ---
 - name: inst-extra-repos-redhat
-  dnf:
+  package:
     state: present
     name:
       - elrepo-release

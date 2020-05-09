@@ -1,6 +1,6 @@
 ---
 - name: inst-tools-redhat
-  dnf:
+  package:
     state: present
     name:
       - lsof
