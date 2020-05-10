@@ -1,0 +1,26 @@
+---
+- name: network-github-webhook-handler
+  docker_network:
+    name: github-webhook-handler
+
+- name: container-github-webhook-handler
+  docker_container:
+    name: github-webhook-handler
+    image: ilikejam/github-webhook-handler
+    user: "{{ github_webhook_uid }}:{{ github_webhook_gid }}"
+    mounts:
+      - type: bind
+        source: /var/run/repos
+        target: /repo
+        read_only: false
+      - type: bind
+        source: /etc/id_github_deploy
+        target: /etc/id_github_deploy
+        read_only: true
+      - type: bind
+        source: /etc/github_webhook_secret
+        target: /etc/github_webhook_secret
+        read_only: true
+    networks:
+      - name: github-webhook-handler
+    purge_networks: true
