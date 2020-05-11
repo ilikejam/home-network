@@ -11,15 +11,15 @@
     mounts:
       - type: bind
         source: /var/run/repos
-        target: /repo
+        target: /repos
         read_only: false
       - type: bind
-        source: /etc/id_github_deploy
-        target: /etc/id_github_deploy
+        source: "{{ github_deploy_key_path }}"
+        target: "{{ github_deploy_key_path }}"
         read_only: true
       - type: bind
-        source: /etc/github_webhook_secret
-        target: /etc/github_webhook_secret
+        source: "{{ github_webhook_secret_path }}"
+        target: "{{ github_webhook_secret_path }}"
         read_only: true
     networks:
       - name: github-webhook-handler
