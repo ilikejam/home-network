@@ -3,6 +3,14 @@
   docker_network:
     name: github-webhook-handler
 
+- name: network-wiki
+  docker_network:
+    name: wiki
+
+- name: network_letsencrypt
+  docker_network:
+    name: letsencrypt
+
 - name: container-github-webhook-handler
   docker_container:
     name: github-webhook-handler
