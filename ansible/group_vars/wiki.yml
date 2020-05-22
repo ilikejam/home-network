@@ -1,5 +1,3 @@
 ---
 github_webhook_secret_path: "/etc/github_webhook_secret"
 github_deploy_key_path: "/etc/id_github_deploy"
-github_webhook_uid: "2000"
-github_webhook_gid: "2000"

@@ -7,7 +7,7 @@
   docker_network:
     name: wiki
 
-- name: network_letsencrypt
+- name: network-letsencrypt
   docker_network:
     name: letsencrypt
 
@@ -15,7 +15,8 @@
   docker_container:
     name: github-webhook-handler
     image: ilikejam/github-webhook-handler
-    user: "{{ github_webhook_uid }}:{{ github_webhook_gid }}"
+    restart_policy: always
+    user: '{{ users["github_webhook"]["uid"] }}:{{ users["github_webhook"]["gid"] }}'
     mounts:
       - type: bind
         source: /var/run/repos
@@ -32,3 +33,24 @@
     networks:
       - name: github-webhook-handler
     purge_networks: true
+
+- name: stat-haproxy-pem
+  stat:
+    path: /etc/letsencrypt/haproxy.pem
+  register: stat_haproxy_pem_result
+
+- name: oneshot-container-letsencrypt
+  when: not stat_haproxy_pem_result.stat.exists
+  docker_container:
+    name: letsencrypt
+    image: ilikejam/letsencrypt
+    user: '{{ users["certbot"]["uid"] }}:{{ users["certbot"]["gid"] }}'
+    mounts:
+      - type: bind
+        source: /etc/letsencrypt
+        target: /etc/letsencrypt
+        read_only: false
+    published_ports: 80:8000
+    command: "bash -c 'certbot certonly --standalone --preferred-challenges http-01 --http-01-port 8000 --work-dir /var/tmp --logs-dir /var/tmp --agree-tos --non-interactive --cert-name this -m dave@davidstark.name -d docs.davidstark.name --staging && cat /etc/letsencrypt/live/this/fullchain.pem /etc/letsencrypt/live/this/privkey.pem  > /etc/letsencrypt/haproxy.pem'"
+    restart_policy: "no"
+    detach: false

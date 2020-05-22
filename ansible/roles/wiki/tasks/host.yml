@@ -4,21 +4,29 @@
     dest: "{{ github_webhook_secret_path }}"
     content: "{{ lookup('env','GH_WEBHOOK_SECRET') }}"
     mode: '0400'
-    owner: "{{ github_webhook_uid }}"
-    group: "{{ github_webhook_uid }}"
+    owner: '{{ users["github_webhook"]["uid"] }}'
+    group: '{{ users["github_webhook"]["gid"] }}'
 
 - name: file-github-deploy-key
   copy:
     dest: "{{ github_deploy_key_path }}"
     src: ~/.ssh/id_github_deploy
     mode: '0400'
-    owner: "{{ github_webhook_uid }}"
-    group: "{{ github_webhook_uid }}"
+    owner: '{{ users["github_webhook"]["uid"] }}'
+    group: '{{ users["github_webhook"]["gid"] }}'
 
 - name: dir-var-run-repos
   file:
     path: /var/run/repos
     state: directory
     mode: '0755'
-    owner: "{{ github_webhook_uid }}"
-    group: "{{ github_webhook_uid }}"
+    owner: '{{ users["github_webhook"]["uid"] }}'
+    group: '{{ users["github_webhook"]["gid"] }}'
+
+- name: dir-etc-letsencrypt
+  file:
+    path: /etc/letsencrypt
+    state: directory
+    mode: '0755'
+    owner: '{{ users["certbot"]["uid"] }}'
+    group: '{{ users["certbot"]["gid"] }}'

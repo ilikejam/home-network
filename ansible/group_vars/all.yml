@@ -1,1 +1,17 @@
 config_repo: /var/tmp/home-network
+users:
+  github_webhook:
+    uid: 2000
+    gid: 2000
+  certbot:
+    uid: 2001
+    gid: 2001
+  haproxy:
+    uid: 2002
+    git: 2002
+  wiki:
+    uid: 2003
+    gid: 2003
+  webmisc:
+    uid: 2004
+    gid: 2004
