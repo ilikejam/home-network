@@ -1,4 +1,12 @@
 ---
+- name: getent-docker-gid
+  getent:
+    database: group
+    key: docker
+
+- set_fact:
+    docker_gid: "{{ getent_group.docker[1] }}"
+
 - name: network-github-webhook-handler
   docker_network:
     name: github-webhook-handler
@@ -73,6 +81,7 @@
         source: /var/run/docker.sock
         target: /var/run/docker.sock
         read_only: false
+    user: '{{ users["certbot"]["uid"] }}:{{ docker_gid }}'
     command: "bash -c 'sleep 10; while true; do certbot renew --standalone --http-01-port 8000 --work-dir /var/tmp --logs-dir /var/tmp --deploy-hook /deploy-hook; sleep 86400; done'"
     restart_policy: always
     privileged: true
