@@ -44,7 +44,7 @@
     user: '{{ users["github_webhook"]["uid"] }}:{{ users["github_webhook"]["gid"] }}'
     mounts:
       - type: bind
-        source: /var/run/repos
+        source: /var/dockerbind/repos
         target: /repos
         read_only: false
       - type: bind
@@ -87,7 +87,7 @@
     user: '{{ users["wiki"]["uid"] }}:{{ users["wiki"]["gid"] }}'
     mounts:
       - type: bind
-        source: /var/run/repos/wiki
+        source: /var/dockerbind/repos/wiki
         target: /wiki
     networks:
       - name: wiki
@@ -102,11 +102,12 @@
     user: '{{ users["webmisc"]["uid"] }}:{{ users["webmisc"]["gid"] }}'
     mounts:
       - type: bind
-        source: /var/run/webmisc
+        source: /var/dockerbind/webmisc
         target: /serve
     networks:
       - name: webmisc
     restart_policy: always
+    exposed_ports: [ "8000" ]
     command: "bash -c 'cd /serve && python -m http.server 8000'"
     networks_cli_compatible: true
     purge_networks: true

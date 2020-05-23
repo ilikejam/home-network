@@ -15,9 +15,25 @@
     owner: '{{ users["github_webhook"]["uid"] }}'
     group: '{{ users["github_webhook"]["gid"] }}'
 
-- name: dir-var-run-repos
+- name: dir-var-dockerbind
   file:
-    path: /var/run/repos
+    path: /var/dockerbind
+    state: directory
+    mode: '0755'
+    owner: root
+    group: root
+
+- name: dir-var-dockerbind-repos
+  file:
+    path: /var/dockerbind/repos
+    state: directory
+    mode: '0755'
+    owner: '{{ users["github_webhook"]["uid"] }}'
+    group: '{{ users["github_webhook"]["gid"] }}'
+
+- name: dir-var-dockerbind-repos-wiki
+  file:
+    path: /var/dockerbind/repos/wiki
     state: directory
     mode: '0755'
     owner: '{{ users["github_webhook"]["uid"] }}'
@@ -39,10 +55,10 @@
     owner: '{{ users["haproxy"]["uid"] }}'
     group: '{{ users["haproxy"]["gid"] }}'
 
-- name: dircopy-var-run-webmisc
+- name: dircopy-var-dockerbind-webmisc
   copy:
     src: icons/
-    dest: /var/run/webmisc
+    dest: /var/dockerbind/webmisc
     mode: '0644'
     owner: root
     group: root
