@@ -84,7 +84,6 @@
     user: '{{ users["certbot"]["uid"] }}:{{ docker_gid }}'
     command: "bash -c 'sleep 10; while true; do certbot renew --standalone --http-01-port 8000 --work-dir /var/tmp --logs-dir /var/tmp --deploy-hook /deploy-hook; sleep 86400; done'"
     restart_policy: always
-    privileged: true
     exposed_ports: [ "8000" ]
     networks_cli_compatible: true
     purge_networks: true
