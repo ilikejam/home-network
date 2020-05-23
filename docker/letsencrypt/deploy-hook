@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-cat /etc/letsencrypt/live/wiki.davidstark.name/fullchain.pem \
-    /etc/letsencrypt/live/wiki.davidstark.name/privkey.pem \
-    > /etc/letsencrypt/haproxy.pem \
-  && docker kill -s HUP haproxy
