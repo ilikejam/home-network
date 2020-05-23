@@ -11,6 +11,31 @@
   docker_network:
     name: letsencrypt
 
+- name: network-webmisc
+  docker_network:
+    name: webmisc
+
+- name: stat-haproxy-pem
+  stat:
+    path: /etc/letsencrypt/haproxy.pem
+  register: stat_haproxy_pem_result
+
+- name: oneshot-container-letsencrypt
+  when: not stat_haproxy_pem_result.stat.exists
+  docker_container:
+    name: letsencrypt-oneshot
+    image: ilikejam/letsencrypt
+    user: '{{ users["certbot"]["uid"] }}:{{ users["certbot"]["gid"] }}'
+    mounts:
+      - type: bind
+        source: /etc/letsencrypt
+        target: /etc/letsencrypt
+        read_only: false
+    published_ports: 80:8000
+    command: "bash -c 'certbot certonly --standalone --preferred-challenges http-01 --http-01-port 8000 --work-dir /var/tmp --logs-dir /var/tmp --agree-tos --non-interactive --cert-name this -m dave@davidstark.name -d {{ wiki_domain }} && cat /etc/letsencrypt/live/this/fullchain.pem /etc/letsencrypt/live/this/privkey.pem  > /etc/letsencrypt/haproxy.pem'"
+    restart_policy: "no"
+    detach: false
+
 - name: container-github-webhook-handler
   docker_container:
     name: github-webhook-handler
@@ -32,25 +57,81 @@
         read_only: true
     networks:
       - name: github-webhook-handler
+    networks_cli_compatible: true
     purge_networks: true
 
-- name: stat-haproxy-pem
-  stat:
-    path: /etc/letsencrypt/haproxy.pem
-  register: stat_haproxy_pem_result
-
-- name: oneshot-container-letsencrypt
-  when: not stat_haproxy_pem_result.stat.exists
+- name: container-letsencrypt
   docker_container:
     name: letsencrypt
     image: ilikejam/letsencrypt
-    user: '{{ users["certbot"]["uid"] }}:{{ users["certbot"]["gid"] }}'
     mounts:
       - type: bind
         source: /etc/letsencrypt
         target: /etc/letsencrypt
         read_only: false
-    published_ports: 80:8000
-    command: "bash -c 'certbot certonly --standalone --preferred-challenges http-01 --http-01-port 8000 --work-dir /var/tmp --logs-dir /var/tmp --agree-tos --non-interactive --cert-name this -m dave@davidstark.name -d docs.davidstark.name --staging && cat /etc/letsencrypt/live/this/fullchain.pem /etc/letsencrypt/live/this/privkey.pem  > /etc/letsencrypt/haproxy.pem'"
-    restart_policy: "no"
-    detach: false
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        read_only: false
+    command: "bash -c 'sleep 10; while true; do certbot renew --standalone --http-01-port 8000 --work-dir /var/tmp --logs-dir /var/tmp --deploy-hook /deploy-hook; sleep 86400; done'"
+    restart_policy: always
+    privileged: true
+    exposed_ports: [ "8000" ]
+    networks_cli_compatible: true
+    purge_networks: true
+
+- name: container-gollum
+  docker_container:
+    name: wiki
+    image: ilikejam/gollum
+    user: '{{ users["wiki"]["uid"] }}:{{ users["wiki"]["gid"] }}'
+    mounts:
+      - type: bind
+        source: /var/run/repos/wiki
+        target: /wiki
+    networks:
+      - name: wiki
+    restart_policy: always
+    networks_cli_compatible: true
+    purge_networks: true
+
+- name: container-webmisc
+  docker_container:
+    name: webmisc
+    image: python:3-slim
+    user: '{{ users["webmisc"]["uid"] }}:{{ users["webmisc"]["gid"] }}'
+    mounts:
+      - type: bind
+        source: /var/run/webmisc
+        target: /serve
+    networks:
+      - name: webmisc
+    restart_policy: always
+    command: "bash -c 'cd /serve && python -m http.server 8000'"
+    networks_cli_compatible: true
+    purge_networks: true
+
+- name: container-haproxy
+  docker_container:
+    name: haproxy
+    image: haproxy:2.0
+    user: '{{ users["haproxy"]["uid"] }}:{{ users["haproxy"]["gid"] }}'
+    mounts:
+      - type: bind
+        source: /etc/haproxy/haproxy.cfg
+        target: /usr/local/etc/haproxy/haproxy.cfg
+        read_only: true
+      - type: bind
+        source: /etc/letsencrypt
+        target: /etc/letsencrypt
+        read_only: true
+    published_ports: [ "80:8080", "443:8443" ]
+    restart_policy: always
+    networks:
+      - name: bridge
+      - name: github-webhook-handler
+      - name: wiki
+      - name: letsencrypt
+      - name: webmisc
+    networks_cli_compatible: true
+    purge_networks: true

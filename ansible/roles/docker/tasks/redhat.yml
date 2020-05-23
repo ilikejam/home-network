@@ -24,6 +24,14 @@
   pip:
     name: docker
 
+- name: file-etc-docker-daemon-json
+  copy:
+    dest: /etc/docker/daemon.json
+    src: daemon.json
+    mode: '0644'
+    owner: root
+    group: root
+
 - name: service-docker
   service:
     name: docker

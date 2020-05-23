@@ -8,7 +8,7 @@ users:
     gid: 2001
   haproxy:
     uid: 2002
-    git: 2002
+    gid: 2002
   wiki:
     uid: 2003
     gid: 2003

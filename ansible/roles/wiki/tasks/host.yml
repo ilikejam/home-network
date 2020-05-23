@@ -30,3 +30,28 @@
     mode: '0755'
     owner: '{{ users["certbot"]["uid"] }}'
     group: '{{ users["certbot"]["gid"] }}'
+
+- name: dir-etc-haproxy
+  file:
+    path: /etc/haproxy
+    state: directory
+    mode: '0755'
+    owner: '{{ users["haproxy"]["uid"] }}'
+    group: '{{ users["haproxy"]["gid"] }}'
+
+- name: dircopy-var-run-webmisc
+  copy:
+    src: icons/
+    dest: /var/run/webmisc
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: template-haproxy-cfg
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart-container-haproxy
