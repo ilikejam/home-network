@@ -2,5 +2,6 @@
 - hosts: permanent
   roles:
     - global-handlers
+    - secure
     - crashkernel
     - home-network-repo

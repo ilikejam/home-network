@@ -1,0 +1,20 @@
+---
+- name: get-services
+  service_facts:
+
+- name: stop-network-services
+  service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: false
+  when: item in services
+  with_items:
+    - "rpcbind"
+    - "postfix"
+
+- name: uninst-network-packages
+  package:
+    state: absent
+    name:
+      - rpcbind
+      - postfix
