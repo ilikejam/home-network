@@ -18,3 +18,10 @@
     name:
       - rpcbind
       - postfix
+
+- name: remove-default-users
+  user:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - "centos"
