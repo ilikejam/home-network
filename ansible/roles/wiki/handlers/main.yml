@@ -1,4 +1,4 @@
 ---
 - name: restart-container-haproxy
   shell:
-    cmd: 'docker inspect haproxy && docker kill -s HUP haproxy || true'
+    cmd: '! docker inspect haproxy || docker restart haproxy'
