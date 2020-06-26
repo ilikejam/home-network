@@ -15,3 +15,6 @@ users:
   webmisc:
     uid: 2004
     gid: 2004
+  files:
+    uid: 2005
+    gid: 2005

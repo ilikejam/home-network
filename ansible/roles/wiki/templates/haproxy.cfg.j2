@@ -49,11 +49,13 @@ frontend https_in
     acl ico_pth path_beg -i /favicon-32x32.png
     acl ico_pth path_beg -i /favicon.ico
     acl ico_pth path_beg -i /favicons/
+    acl file_pth path_beg -i /files/
     acl wiki_hdr hdr(host) -i {{ wiki_domain }}
 
     use_backend github-webhook-handler if webhook_pth METH_POST
     use_backend letsencrypt if acme_pth
     use_backend webmisc if ico_pth METH_GET
+    use_backend files if file_pth METH_GET
     use_backend wiki if wiki_hdr METH_GET
 
 backend github-webhook-handler
@@ -67,3 +69,7 @@ backend wiki
 
 backend webmisc
     server webmisc webmisc:8000 resolvers docker check
+
+backend files
+    server files files:8000 resolvers docker check
+    http-request set-path "%[path,regsub(^/files/,/)]"

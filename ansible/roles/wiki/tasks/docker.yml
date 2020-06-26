@@ -23,6 +23,10 @@
   docker_network:
     name: webmisc
 
+- name: network-files
+  docker_network:
+    name: files
+
 - name: stat-haproxy-pem
   stat:
     path: /etc/letsencrypt/haproxy.pem
@@ -120,6 +124,23 @@
     networks_cli_compatible: true
     purge_networks: true
 
+- name: container-files
+  docker_container:
+    name: files
+    image: python:3-slim
+    user: '{{ users["files"]["uid"] }}:{{ users["files"]["gid"] }}'
+    mounts:
+      - type: bind
+        source: /var/dockerbind/files
+        target: /serve
+    networks:
+      - name: files
+    restart_policy: always
+    exposed_ports: [ "8000" ]
+    command: "bash -c 'cd /serve && python -m http.server 8000'"
+    networks_cli_compatible: true
+    purge_networks: true
+
 - name: container-haproxy
   docker_container:
     name: haproxy
@@ -142,5 +163,6 @@
       - name: wiki
       - name: letsencrypt
       - name: webmisc
+      - name: files
     networks_cli_compatible: true
     purge_networks: true
