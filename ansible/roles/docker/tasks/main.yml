@@ -1,3 +1,11 @@
 ---
 - include_tasks: redhat.yml
   when: ansible_facts['os_family'] == "RedHat"
+
+- name: getent-docker-gid
+  getent:
+    database: group
+    key: docker
+
+- set_fact:
+    docker_gid: "{{ getent_group.docker[1] }}"
