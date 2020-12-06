@@ -5,6 +5,17 @@
     name: "{{ ssh_service }}"
     state: restarted
 
+- name: journald-restart
+  listen: journald-changed
+  service:
+    name: systemd-journald
+    state: restarted
+  notify: journald-flush
+
+- name: journald-flush
+  command:
+    cmd: /usr/bin/journalctl --flush
+
 - name: grub-rebuild
   listen: kernel-changed
   command:
