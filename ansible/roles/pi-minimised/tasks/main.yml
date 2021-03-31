@@ -71,6 +71,12 @@
   register: check_swap_result
   changed_when: false
 
+- name: service-dphys-swapfile-disable
+  service:
+    name: dphys-swapfile
+    state: stopped
+    enabled: no
+
 - name: disable-swap
   shell: /sbin/dphys-swapfile swapoff
   when: "check_swap_result.stdout != ''"
