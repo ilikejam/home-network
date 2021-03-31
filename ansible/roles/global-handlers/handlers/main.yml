@@ -12,6 +12,12 @@
     state: restarted
   notify: journald-flush
 
+- name: docker-restart
+  listen: docker-changed
+  service:
+    name: docker
+    state: restarted
+
 - name: journald-flush
   command:
     cmd: /usr/bin/journalctl --flush
@@ -26,6 +32,10 @@
   listen: iptables-changed
   command:
     cmd: service iptables save
+
+- name: apt-autoremove
+  command:
+    cmd: /usr/bin/apt -y autoremove
 
 - name: reboot-host-now
   listen: reboot

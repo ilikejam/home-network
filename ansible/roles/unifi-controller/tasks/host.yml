@@ -1,0 +1,16 @@
+---
+- name: dir-var-dockerbind-unifi-data
+  file:
+    path: /var/dockerbind/unifi/data
+    state: directory
+    mode: '0755'
+    owner: 999
+    group: 999
+
+- name: dir-var-dockerbind-unifi-log
+  file:
+    path: /var/dockerbind/unifi/log
+    state: directory
+    mode: '0755'
+    owner: 999
+    group: 999

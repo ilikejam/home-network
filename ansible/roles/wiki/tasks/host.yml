@@ -15,14 +15,6 @@
     owner: '{{ users["github_webhook"]["uid"] }}'
     group: '{{ users["github_webhook"]["gid"] }}'
 
-- name: dir-var-dockerbind
-  file:
-    path: /var/dockerbind
-    state: directory
-    mode: '0755'
-    owner: root
-    group: root
-
 - name: dir-var-dockerbind-repos
   file:
     path: /var/dockerbind/repos

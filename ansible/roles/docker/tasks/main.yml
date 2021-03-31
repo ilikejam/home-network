@@ -2,6 +2,9 @@
 - include_tasks: redhat.yml
   when: ansible_facts['os_family'] == "RedHat"
 
+- include_tasks: debian.yml
+  when: ansible_facts['os_family'] == "Debian"
+
 - name: getent-docker-gid
   getent:
     database: group
@@ -9,3 +12,11 @@
 
 - set_fact:
     docker_gid: "{{ getent_group.docker[1] }}"
+
+- name: dir-var-dockerbind
+  file:
+    path: /var/dockerbind
+    state: directory
+    mode: '0755'
+    owner: root
+    group: root

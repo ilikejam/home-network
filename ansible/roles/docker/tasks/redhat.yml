@@ -31,6 +31,7 @@
     mode: '0644'
     owner: root
     group: root
+  notify: docker-changed
 
 - name: service-docker
   service:

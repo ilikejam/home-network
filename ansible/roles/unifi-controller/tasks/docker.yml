@@ -1,0 +1,14 @@
+---
+- name: container-unifi-controller
+  docker_container:
+    name: unifi
+    image: jacobalberty/unifi:stable-6
+    restart_policy: always
+    user: unifi
+    mounts:
+      - type: bind
+        source: /var/dockerbind/unifi
+        target: /unifi
+        read_only: false
+    init: true
+    published_ports: [ "8080:8080", "8443:8443", "3478:3478/udp" ]

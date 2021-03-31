@@ -3,17 +3,17 @@
   lineinfile:
     path: /etc/dhcpcd.conf
     regexp: '^slaac'
-    line: 'slaac hardware'
+    line: 'slaac hwaddr'
 
 - name: disable-wifi
   lineinfile:
     path: /boot/config.txt
-    line: dtoverlay=pi3-disable-wifi
+    line: dtoverlay=disable-wifi
 
 - name: disable-bt
   lineinfile:
     path: /boot/config.txt
-    line: dtoverlay=pi3-disable-bt
+    line: dtoverlay=disable-bt
 
 - name: unitfile-hdmi-off
   copy:
@@ -26,6 +26,46 @@
     enabled: yes
     daemon_reload: yes
 
+- name: package-cpufrequtils
+  package:
+    name: cpufrequtils
+    state: present
+
+- name: service-cpufrequtils
+  service:
+    name: cpufrequtils
+    state: started
+    enabled: yes
+
+- name: poe-hat-ovr
+  lineinfile:
+    path: /boot/config.txt
+    line: dtoverlay=rpi-poe
+
+- name: poe-hat0
+  lineinfile:
+    path: /boot/config.txt
+    line: dtparam=poe_fan_temp0=70000,poe_fan_temp0_hyst=5000
+    regexp: '^dtparam=poe_fan_temp0'
+
+- name: poe-hat1
+  lineinfile:
+    path: /boot/config.txt
+    line: dtparam=poe_fan_temp1=72500,poe_fan_temp1_hyst=2500
+    regexp: '^dtparam=poe_fan_temp1'
+
+- name: poe-hat2
+  lineinfile:
+    path: /boot/config.txt
+    line: dtparam=poe_fan_temp2=75000,poe_fan_temp2_hyst=2500
+    regexp: '^dtparam=poe_fan_temp2'
+
+- name: poe-hat3
+  lineinfile:
+    path: /boot/config.txt
+    line: dtparam=poe_fan_temp3=78000,poe_fan_temp3_hyst=3000
+    regexp: '^dtparam=poe_fan_temp3'
+
 - name: check-swap
   shell: swapon -s
   register: check_swap_result
@@ -37,7 +77,7 @@
   notify: remove-swap
 
 - name: deinst-pi-crap
-  apt:
+  package:
     state: absent
     purge: yes
     name:
@@ -46,3 +86,36 @@
       - bluez-firmware
       - avahi-daemon
       - triggerhappy
+      - x11-common
+      - libwayland-client0
+      - wireless-tools
+      - alsa-utils
+  notify: apt-autoremove
+
+- name: stop-tty1
+  service:
+    name: getty@tty1
+    state: stopped
+    enabled: no
+
+- name: stop-ttyAMA0
+  service:
+    name: serial-getty@ttyAMA0
+    state: stopped
+    enabled: no
+
+- name: disable-autologin
+  file:
+    path: /etc/systemd/system/autologin@.service
+    state: absent
+
+- name: remove-pi-user
+  user:
+    name: pi
+    state: absent
+    remove: yes
+
+- name: remove-pi-sudo
+  file:
+    path: /etc/sudoers.d/010_pi-nopasswd
+    state: absent

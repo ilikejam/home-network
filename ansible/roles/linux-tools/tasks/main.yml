@@ -3,7 +3,7 @@
   when: ansible_facts['os_family'] == "Debian"
 
 - include_tasks: pi.yml
-  when: ansible_facts['architecture'] == "armv7l"
+  when: ansible_facts['architecture'] == "armv7l" or ansible_facts['architecture'] == "aarch64"
 
 - include_tasks: redhat.yml
   when: ansible_facts['os_family'] == "RedHat"
