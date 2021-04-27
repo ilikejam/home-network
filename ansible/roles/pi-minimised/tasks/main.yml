@@ -4,6 +4,11 @@
     path: /etc/dhcpcd.conf
     regexp: '^slaac'
     line: 'slaac hwaddr'
+    
+- name: minimum-gpu-ram
+  lineinfile:
+    path: /boot/config.txt
+    line: gpu_mem=16
 
 - name: disable-wifi
   lineinfile:
