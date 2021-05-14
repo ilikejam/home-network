@@ -149,7 +149,7 @@
         source: /etc/letsencrypt
         target: /etc/letsencrypt
         read_only: true
-    published_ports: [ "[::]:80:8080", "[::]:443:8443" ]
+    published_ports: [ "80:8080", "443:8443", "[::]:80:8080", "[::]:443:8443" ]
     restart_policy: always
     networks:
       - name: bridge
