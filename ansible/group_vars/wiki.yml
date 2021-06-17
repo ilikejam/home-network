@@ -1,4 +1,5 @@
 ---
 github_webhook_secret_path: "/etc/github_webhook_secret"
 github_deploy_key_path: "/etc/id_github_deploy"
-wiki_domain: "docs.davidstark.name"
+domain: "davidstark.name"
+wiki_domain: "docs.{{ domain }}"

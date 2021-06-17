@@ -28,18 +28,21 @@ frontend http_in
     capture request header User-Agent len 256
 
     acl acme_pth path_beg -i /.well-known/acme-challenge
-    redirect scheme https code 301 if !{ ssl_fc } !acme_pth
+    redirect scheme https code 301 if !acme_pth
     use_backend letsencrypt if acme_pth
 
 frontend https_in
     bind *:8443 ssl crt /etc/letsencrypt/haproxy.pem
     mode http
 
+    http-response set-header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+
     capture request header Host len 256
     capture request header User-Agent len 256
 
     http-request add-header X-Forwarded-Proto https
 
+    acl bare_domain_hdr hdr(host) -i {{ domain }}
     acl webhook_pth path_beg -i /postreceive
     acl acme_pth path_beg -i /.well-known/acme-challenge
     acl ico_pth path_beg -i /android-chrome-192x192.png
@@ -52,11 +55,20 @@ frontend https_in
     acl file_pth path_beg -i /files/
     acl wiki_hdr hdr(host) -i {{ wiki_domain }}
 
+    use_backend bare_domain_redirect if bare_domain_hdr
     use_backend github-webhook-handler if webhook_pth METH_POST
     use_backend letsencrypt if acme_pth
     use_backend webmisc if ico_pth METH_GET
     use_backend files if file_pth METH_GET
     use_backend wiki if wiki_hdr METH_GET
+
+listen bare_domain_redirect_listener
+    bind 127.0.0.1:8001
+    http-request redirect code 301 location https://{{ wiki_domain }}/
+
+backend bare_domain_redirect
+    http-response set-header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+    server bare_domain_redirect_server 127.0.0.1:8001
 
 backend github-webhook-handler
     server github-webhook-handler github-webhook-handler:8000 resolvers docker check
