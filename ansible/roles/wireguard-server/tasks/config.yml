@@ -27,3 +27,9 @@
   tags:
     - never
     - wireguard-init
+  notify: "wireguard-changed"
+
+- name: conf-wireguard-etc-services
+  lineinfile:
+    path: /etc/services
+    line: "wireguard	2843/upd"
