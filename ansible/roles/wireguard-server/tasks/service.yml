@@ -9,3 +9,10 @@
   service:
     name: iptables
     enabled: yes
+  when: ansible_facts['os_family'] == "RedHat"
+
+- name: service-netfilter-persistent
+  service:
+    name: netfilter-persistent
+    enabled: yes
+  when: ansible_facts['os_family'] == "Debian"

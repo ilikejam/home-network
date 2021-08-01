@@ -2,6 +2,7 @@
 # Script to generate a wireguard config
 set -e
 PNET='192.168.100'
+P6NET='fd57:1722:285e:2fd1'
 
 error() {
     echo "$0: ERROR: $1" >&2
@@ -18,7 +19,7 @@ usage() {
 }
 
 nextcip() {
-    lastip=$(cat /etc/wireguard/wg0.conf  | grep -F "AllowedIPs = $RANGE" | awk -F. '{print $NF}' | sed 's|/.*||' | tail -1)
+    lastip=$(grep -F "AllowedIPs = $RANGE" /etc/wireguard/wg0.conf | awk -F. '{print $NF}' | sed 's|/.*||' | tail -1)
     if [[ -z $lastip ]]; then
         echo 10
     else
@@ -27,7 +28,7 @@ nextcip() {
 }
 
 OUTCMD='cat -'
-while getopts ':q' opt; do
+while getopts ':qh' opt; do
     case $opt in
         q)
             OUTCMD='qrencode -t ansiutf8'
@@ -41,23 +42,26 @@ done
 trap 'error "Script ended unexpectedly at line $LINENO"' EXIT
 
 CPRIVKEY=$(wg genkey)
-CPUBKEY=$(echo $CPRIVKEY | wg pubkey)
-CIP=$PNET.$(nextcip)
+CPUBKEY=$(echo "$CPRIVKEY" | wg pubkey)
+NEXTCIP=$(nextcip)
+CIP=$PNET.$NEXTCIP
+C6IP=$P6NET::$NEXTCIP
 SPUBKEY=$(cat /etc/wireguard/publickey)
-SIP=$(ip route get 1.1.1.1 | grep '^1' | sed 's/.*src //; s/ .*//')
+SIP="home.davidstark.name"
+#SIP=$(ip route get 1.1.1.1 | grep '^1' | sed 's/.*src //; s/ .*//')
 SPORT=$(grep '^ListenPort' /etc/wireguard/wg0.conf | awk '{print $NF}')
 
 cat <<_EOF >> /etc/wireguard/wg0.conf
 
 [Peer]
 PublicKey = $CPUBKEY
-AllowedIPs = $CIP/32
+AllowedIPs = $CIP/32, $C6IP/128
 _EOF
 
 cat <<_EOF | $OUTCMD
 [Interface]
 PrivateKey = $CPRIVKEY
-Address = $CIP
+Address = $CIP, $C6IP
 DNS = 1.1.1.1
 
 [Peer]

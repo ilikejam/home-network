@@ -1,6 +1,33 @@
 ---
+
+# FIXME - Move default forward-drop to a general security role
+
 - name: iptables-forward-reject
   iptables:
+    ip_version: ipv4
     chain: FORWARD
-    reject_with: icmp-port-unreachable
-  notify: iptables-changed
+    policy: DROP
+
+- name: ip6tables-forward-reject
+  iptables:
+    ip_version: ipv6
+    chain: FORWARD
+    policy: DROP
+
+- name: iptables-default
+  copy:
+    src: rules.v4
+    dest: /etc/iptables/rules.v4
+    owner: root
+    group: root
+    mode: '0644'
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: ip6tables-default
+  copy:
+    src: rules.v6
+    dest: /etc/iptables/rules.v6
+    owner: root
+    group: root
+    mode: '0644'
+  when: ansible_facts['os_family'] == "Debian"

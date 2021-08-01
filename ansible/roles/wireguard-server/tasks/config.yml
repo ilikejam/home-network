@@ -24,3 +24,6 @@
     owner: root
     group: root
     mode: '0644'
+  tags:
+    - never
+    - wireguard-init

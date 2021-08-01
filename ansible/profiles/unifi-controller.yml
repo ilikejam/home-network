@@ -1,0 +1,8 @@
+---
+- hosts: pi.home
+  roles:
+    - global-handlers
+    - docker
+    - role: unifi-controller
+      tags:
+        unifi

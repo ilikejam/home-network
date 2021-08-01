@@ -1,0 +1,10 @@
+---
+- name: inst-wireguard
+  package:
+    state: present
+    name:
+      - wireguard
+      - tcpdump
+      - iptables
+      - iptables-persistent
+      - qrencode

@@ -4,5 +4,3 @@
     - secure
     - global-handlers
     - pi-minimised
-    - docker
-    - unifi-controller
