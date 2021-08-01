@@ -4,7 +4,7 @@
     path: /etc/dhcpcd.conf
     regexp: '^slaac'
     line: 'slaac hwaddr'
-    
+
 - name: minimum-gpu-ram
   lineinfile:
     path: /boot/config.txt
@@ -75,6 +75,7 @@
   shell: swapon -s
   register: check_swap_result
   changed_when: false
+  check_mode: no
 
 - name: service-dphys-swapfile-disable
   service:
@@ -110,10 +111,11 @@
     enabled: no
 
 - name: stop-ttyAMA0
-  service:
+  systemd:
     name: serial-getty@ttyAMA0
     state: stopped
     enabled: no
+    masked: yes
 
 - name: disable-autologin
   file:
