@@ -132,3 +132,8 @@
   file:
     path: /etc/sudoers.d/010_pi-nopasswd
     state: absent
+
+- name: enable-trim
+  systemd:
+    name: fstrim.timer
+    enabled: yes
