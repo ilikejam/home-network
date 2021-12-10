@@ -12,3 +12,5 @@
         read_only: false
     init: true
     published_ports: [ "8080:8080", "8443:8443", "3478:3478/udp" ]
+    env:
+      JVM_EXTRA_OPTS: "-Dlog4j2.formatMsgNoLookups=true"
