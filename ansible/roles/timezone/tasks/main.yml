@@ -1,4 +1,4 @@
 ---
 - name: timezone-utc
   timezone:
-    name: UTC
+    name: Etc/UTC
