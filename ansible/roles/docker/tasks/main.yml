@@ -10,8 +10,9 @@
     database: group
     key: docker
 
-- set_fact:
-    docker_gid: "{{ getent_group.docker[1] }}"
+- name: set-docker-gid
+  set_fact:
+    docker_gid: getent_group.docker[1]
 
 - name: dir-var-dockerbind
   file:

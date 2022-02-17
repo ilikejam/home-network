@@ -29,7 +29,7 @@
     - wireguard-init
   notify: "wireguard-changed"
 
-- name: conf-wireguard-etc-services
+- name: conf-wireguard-etc-services # noqa no-tabs
   lineinfile:
     path: /etc/services
     line: "wireguard	2843/upd"

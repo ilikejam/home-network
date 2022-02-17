@@ -36,7 +36,10 @@
         target: /etc/letsencrypt
         read_only: false
     published_ports: 80:8000
-    command: "bash -c 'certbot certonly --standalone --preferred-challenges http-01 --http-01-port 8000 --work-dir /var/tmp --logs-dir /var/tmp --agree-tos --non-interactive --cert-name this -m dave@davidstark.name -d {{ wiki_domain }} && cat /etc/letsencrypt/live/this/fullchain.pem /etc/letsencrypt/live/this/privkey.pem  > /etc/letsencrypt/haproxy.pem'"
+    command: >
+      bash -c 'certbot certonly --standalone --preferred-challenges http-01 --http-01-port 8000 --work-dir /var/tmp --logs-dir /var/tmp --agree-tos
+      --non-interactive --cert-name this -m dave@davidstark.name -d {{ wiki_domain }} && cat /etc/letsencrypt/live/this/fullchain.pem
+      /etc/letsencrypt/live/this/privkey.pem  > /etc/letsencrypt/haproxy.pem'
     restart_policy: "no"
     detach: false
 
@@ -80,9 +83,11 @@
     networks:
       - name: letsencrypt
     user: '{{ users["certbot"]["uid"] }}:{{ docker_gid }}'
-    command: "bash -c 'sleep 10; while true; do certbot renew --standalone --http-01-port 8000 --work-dir /var/tmp --logs-dir /var/tmp --deploy-hook /deploy-hook; sleep 86400; done'"
+    command: >
+      bash -c 'sleep 10; while true; do certbot renew --standalone --http-01-port 8000 --work-dir /var/tmp --logs-dir /var/tmp --deploy-hook /deploy-hook;
+      sleep 86400; done'
     restart_policy: always
-    exposed_ports: [ "8000" ]
+    exposed_ports: ["8000"]
     networks_cli_compatible: true
     purge_networks: true
 
@@ -113,7 +118,7 @@
     networks:
       - name: webmisc
     restart_policy: always
-    exposed_ports: [ "8000" ]
+    exposed_ports: ["8000"]
     command: "bash -c 'cd /serve && python -m http.server 8000'"
     networks_cli_compatible: true
     purge_networks: true
@@ -130,7 +135,7 @@
     networks:
       - name: files
     restart_policy: always
-    exposed_ports: [ "8000" ]
+    exposed_ports: ["8000"]
     command: "bash -c 'cd /serve && python -m http.server 8000'"
     networks_cli_compatible: true
     purge_networks: true
@@ -149,7 +154,7 @@
         source: /etc/letsencrypt
         target: /etc/letsencrypt
         read_only: true
-    published_ports: [ "80:8080", "443:8443", "[::]:80:8080", "[::]:443:8443" ]
+    published_ports: ["80:8080", "443:8443", "[::]:80:8080", "[::]:443:8443"]
     restart_policy: always
     networks:
       - name: bridge

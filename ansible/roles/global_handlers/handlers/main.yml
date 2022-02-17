@@ -28,7 +28,7 @@
     cmd: /usr/sbin/grub2-mkconfig -o /boot/grub2/grub.cfg
   notify: reboot
 
-- name: iptables-save
+- name: iptables-save # noqa command-instead-of-module
   listen: iptables-changed
   command:
     cmd: service iptables save

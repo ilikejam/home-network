@@ -2,7 +2,7 @@
 - name: check-github-secret
   fail:
     msg: "GH_WEBHOOK_SECRET env var not defined"
-  when: lookup('env','GH_WEBHOOK_SECRET') == ""
+  when: not lookup('env','GH_WEBHOOK_SECRET')
 
 - name: file-github-secret
   copy:

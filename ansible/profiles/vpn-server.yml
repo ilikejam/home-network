@@ -1,5 +1,5 @@
 ---
 - hosts: vpn_server
   roles:
-    - global-handlers
+    - global_handlers
     - wireguard-server

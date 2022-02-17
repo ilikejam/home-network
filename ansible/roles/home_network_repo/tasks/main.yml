@@ -8,3 +8,4 @@
   git:
     repo: https://github.com/ilikejam/home-network.git
     dest: "{{ config_repo }}"
+    version: master

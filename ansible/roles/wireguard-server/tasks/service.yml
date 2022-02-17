@@ -3,16 +3,16 @@
   service:
     name: wg-quick@wg0
     state: started
-    enabled: yes
+    enabled: true
 
 - name: service-iptables
   service:
     name: iptables
-    enabled: yes
+    enabled: true
   when: ansible_facts['os_family'] == "RedHat"
 
 - name: service-netfilter-persistent
   service:
     name: netfilter-persistent
-    enabled: yes
+    enabled: true
   when: ansible_facts['os_family'] == "Debian"

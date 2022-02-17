@@ -5,6 +5,18 @@
     regexp: '^slaac'
     line: 'slaac hwaddr'
 
+- name: dhcpcd.service.d
+  file:
+    path: /etc/systemd/system/dhcpcd.service.d
+    state: directory
+    mode: 0755
+
+- name: quiet-dhcpcd
+  copy:
+    src: dhcpcd-override.conf
+    dest: /etc/systemd/system/dhcpcd.service.d/override.conf
+    mode: 0644
+
 - name: minimum-gpu-ram
   lineinfile:
     path: /boot/config.txt
@@ -24,12 +36,13 @@
   copy:
     src: hdmi-off.service
     dest: /etc/systemd/system/hdmi-off.service
+    mode: 0644
 
 - name: service-hdmi-off
   systemd:
     name: hdmi-off
-    enabled: yes
-    daemon_reload: yes
+    enabled: true
+    daemon_reload: true
 
 - name: package-cpufrequtils
   package:
@@ -40,7 +53,7 @@
   service:
     name: cpufrequtils
     state: started
-    enabled: yes
+    enabled: true
 
 - name: poe-hat-ovr
   lineinfile:
@@ -72,26 +85,26 @@
     regexp: '^dtparam=poe_fan_temp3'
 
 - name: check-swap
-  shell: swapon -s
+  command: swapon -s
   register: check_swap_result
   changed_when: false
-  check_mode: no
+  check_mode: false
 
 - name: service-dphys-swapfile-disable
   service:
     name: dphys-swapfile
     state: stopped
-    enabled: no
+    enabled: false
 
 - name: disable-swap
-  shell: /sbin/dphys-swapfile swapoff
-  when: "check_swap_result.stdout != ''"
+  command: /sbin/dphys-swapfile swapoff
+  when: check_swap_result.stdout
   notify: remove-swap
 
 - name: deinst-pi-crap
   package:
     state: absent
-    purge: yes
+    purge: true
     name:
       - wpasupplicant
       - bluez
@@ -108,14 +121,14 @@
   service:
     name: getty@tty1
     state: stopped
-    enabled: no
+    enabled: false
 
 - name: stop-ttyAMA0
   systemd:
     name: serial-getty@ttyAMA0
     state: stopped
-    enabled: no
-    masked: yes
+    enabled: false
+    masked: true
 
 - name: disable-autologin
   file:
@@ -126,7 +139,7 @@
   user:
     name: pi
     state: absent
-    remove: yes
+    remove: true
 
 - name: remove-pi-sudo
   file:
@@ -136,4 +149,4 @@
 - name: enable-trim
   systemd:
     name: fstrim.timer
-    enabled: yes
+    enabled: true
