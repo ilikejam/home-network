@@ -1,6 +1,6 @@
 ---
 - name: inst-tools-redhat
-  package:
+  ansible.builtin.package:
     state: present
     name:
       - lsof

@@ -1,13 +1,13 @@
 ---
 - name: sysctl-ip4-forward
-  sysctl:
+  ansible.builtin.sysctl:
     name: net.ipv4.ip_forward
     value: '1'
     state: present
     sysctl_file: /etc/sysctl.d/99-vpn.conf
 
 - name: sysctl-ip6-forward
-  sysctl:
+  ansible.builtin.sysctl:
     name: net.ipv6.conf.all.forwarding
     value: '1'
     state: present

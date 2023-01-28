@@ -1,6 +1,6 @@
 ---
 - name: inst-wireguard
-  dnf:
+  ansible.builtin.dnf:
     state: present
     name:
       - kmod-wireguard

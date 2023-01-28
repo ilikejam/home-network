@@ -1,6 +1,6 @@
 ---
 - name: inst-extra-repos-redhat
-  package:
+  ansible.builtin.package:
     state: present
     name:
       - elrepo-release

@@ -6,16 +6,16 @@
   when: ansible_facts['os_family'] == "Debian"
 
 - name: getent-docker-gid
-  getent:
+  ansible.builtin.getent:
     database: group
     key: docker
 
 - name: set-docker-gid
-  set_fact:
-    docker_gid: getent_group.docker[1]
+  ansible.builtin.set_fact:
+    docker_gid: "{{ getent_group.docker[1] }}"
 
 - name: dir-var-dockerbind
-  file:
+  ansible.builtin.file:
     path: /var/dockerbind
     state: directory
     mode: '0755'

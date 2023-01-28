@@ -1,6 +1,6 @@
 ---
 - name: script-wggenconf
-  copy:
+  ansible.builtin.copy:
     src: wggenconf
     dest: /root/wggenconf
     owner: root

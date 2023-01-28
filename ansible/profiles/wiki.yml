@@ -1,5 +1,6 @@
 ---
 - hosts: wiki
   roles:
+    - global_handlers
     - docker
     - wiki

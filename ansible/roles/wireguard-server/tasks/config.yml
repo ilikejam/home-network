@@ -1,6 +1,6 @@
 ---
 - name: dir-etc-wireguard
-  file:
+  ansible.builtin.file:
     path: /etc/wireguard
     state: directory
     owner: root
@@ -8,17 +8,17 @@
     mode: '0711'
 
 - name: cmd-generate-wg-privkey
-  shell:
+  ansible.builtin.shell:
     cmd: umask 077; wg genkey > /etc/wireguard/privatekey
     creates: /etc/wireguard/privatekey
 
 - name: cmd-generate-wg-pubkey
-  shell:
+  ansible.builtin.shell:
     cmd: wg pubkey < /etc/wireguard/privatekey > /etc/wireguard/publickey
     creates: /etc/wireguard/publickey
 
 - name: conf-wireguard-wg0
-  copy:
+  ansible.builtin.copy:
     src: wg0.conf
     dest: /etc/wireguard/wg0.conf
     owner: root
@@ -30,6 +30,6 @@
   notify: "wireguard-changed"
 
 - name: conf-wireguard-etc-services # noqa no-tabs
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/services
     line: "wireguard	2843/upd"

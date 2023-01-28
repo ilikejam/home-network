@@ -1,108 +1,108 @@
 ---
 - name: slaac-hardware
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/dhcpcd.conf
     regexp: '^slaac'
     line: 'slaac hwaddr'
 
 - name: dhcpcd.service.d
-  file:
+  ansible.builtin.file:
     path: /etc/systemd/system/dhcpcd.service.d
     state: directory
     mode: 0755
 
 - name: quiet-dhcpcd
-  copy:
+  ansible.builtin.copy:
     src: dhcpcd-override.conf
     dest: /etc/systemd/system/dhcpcd.service.d/override.conf
     mode: 0644
 
 - name: minimum-gpu-ram
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /boot/config.txt
     line: gpu_mem=16
 
 - name: disable-wifi
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /boot/config.txt
     line: dtoverlay=disable-wifi
 
 - name: disable-bt
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /boot/config.txt
     line: dtoverlay=disable-bt
 
 - name: unitfile-hdmi-off
-  copy:
+  ansible.builtin.copy:
     src: hdmi-off.service
     dest: /etc/systemd/system/hdmi-off.service
     mode: 0644
 
 - name: service-hdmi-off
-  systemd:
+  ansible.builtin.systemd:
     name: hdmi-off
     enabled: true
     daemon_reload: true
 
 - name: package-cpufrequtils
-  package:
+  ansible.builtin.package:
     name: cpufrequtils
     state: present
 
 - name: service-cpufrequtils
-  service:
+  ansible.builtin.service:
     name: cpufrequtils
     state: started
     enabled: true
 
 - name: poe-hat-ovr
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /boot/config.txt
     line: dtoverlay=rpi-poe
 
 - name: poe-hat0
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /boot/config.txt
     line: dtparam=poe_fan_temp0=70000,poe_fan_temp0_hyst=5000
     regexp: '^dtparam=poe_fan_temp0'
 
 - name: poe-hat1
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /boot/config.txt
     line: dtparam=poe_fan_temp1=72500,poe_fan_temp1_hyst=2500
     regexp: '^dtparam=poe_fan_temp1'
 
 - name: poe-hat2
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /boot/config.txt
     line: dtparam=poe_fan_temp2=75000,poe_fan_temp2_hyst=2500
     regexp: '^dtparam=poe_fan_temp2'
 
 - name: poe-hat3
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /boot/config.txt
     line: dtparam=poe_fan_temp3=78000,poe_fan_temp3_hyst=3000
     regexp: '^dtparam=poe_fan_temp3'
 
 - name: check-swap
-  command: swapon -s
+  ansible.builtin.command: swapon -s
   register: check_swap_result
   changed_when: false
   check_mode: false
 
 - name: service-dphys-swapfile-disable
-  service:
+  ansible.builtin.service:
     name: dphys-swapfile
     state: stopped
     enabled: false
 
 - name: disable-swap
-  command: /sbin/dphys-swapfile swapoff
+  ansible.builtin.command: /sbin/dphys-swapfile swapoff
   when: check_swap_result.stdout
   notify: remove-swap
 
 - name: deinst-pi-crap
-  package:
+  ansible.builtin.package:
     state: absent
     purge: true
     name:
@@ -118,35 +118,35 @@
   notify: apt-autoremove
 
 - name: stop-tty1
-  service:
+  ansible.builtin.service:
     name: getty@tty1
     state: stopped
     enabled: false
 
 - name: stop-ttyAMA0
-  systemd:
+  ansible.builtin.systemd:
     name: serial-getty@ttyAMA0
     state: stopped
     enabled: false
     masked: true
 
 - name: disable-autologin
-  file:
+  ansible.builtin.file:
     path: /etc/systemd/system/autologin@.service
     state: absent
 
 - name: remove-pi-user
-  user:
+  ansible.builtin.user:
     name: pi
     state: absent
     remove: true
 
 - name: remove-pi-sudo
-  file:
+  ansible.builtin.file:
     path: /etc/sudoers.d/010_pi-nopasswd
     state: absent
 
 - name: enable-trim
-  systemd:
+  ansible.builtin.systemd:
     name: fstrim.timer
     enabled: true

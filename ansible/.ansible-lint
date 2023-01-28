@@ -1,2 +1,5 @@
+---
 warn_list:
   - meta-no-info
+exclude_paths:
+  - digitalocean.yml

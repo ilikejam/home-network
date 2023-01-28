@@ -1,6 +1,6 @@
 ---
 - name: inst-wireguard
-  package:
+  ansible.builtin.package:
     state: present
     name:
       - wireguard

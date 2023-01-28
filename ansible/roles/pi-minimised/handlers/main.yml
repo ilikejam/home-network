@@ -1,3 +1,3 @@
 ---
 - name: remove-swap
-  command: /sbin/dphys-swapfile uninstall
+  ansible.builtin.command: /sbin/dphys-swapfile uninstall

@@ -1,6 +1,6 @@
 ---
 - name: inst-tools-debian
-  apt:
+  ansible.builtin.apt:
     state: present
     name:
       - lsof

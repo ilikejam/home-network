@@ -1,6 +1,6 @@
 ---
 - name: inst-pidisplay-reqs
-  apt:
+  ansible.builtin.apt:
     state: present
     name:
       - python3-pip
@@ -11,7 +11,7 @@
       - fonts-dejavu
 
 - name: inst-pip-pidisplay-reqs
-  pip:
+  ansible.builtin.pip:
     executable: pip3
     name:
       - adafruit-circuitpython-ssd1306
@@ -19,28 +19,28 @@
       - flask-wtf
 
 - name: user-display
-  user:
+  ansible.builtin.user:
     name: display
     groups: i2c
 
 - name: test-i2c
-  command: egrep '^dtparam=i2c_arm=on' /boot/config.txt
+  ansible.builtin.command: egrep '^dtparam=i2c_arm=on' /boot/config.txt
   register: test_i2c_result
   changed_when: false
   failed_when: false
 
 - name: enable-i2c
-  command: raspi-config nonint do_i2c 0
+  ansible.builtin.command: raspi-config nonint do_i2c 0
   when: test_i2c_result.rc != 0
 
 - name: unitfile-pidisplay
-  template:
+  ansible.builtin.template:
     src: pidisplay.service.j2
     dest: /etc/systemd/system/pidisplay.service
     mode: 0644
 
 - name: service-pidisplay
-  systemd:
+  ansible.builtin.systemd:
     name: pidisplay
     enabled: true
     daemon_reload: true

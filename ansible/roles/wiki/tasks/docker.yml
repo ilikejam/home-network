@@ -1,32 +1,36 @@
 ---
 - name: network-github-webhook-handler
-  docker_network:
+  community.docker.docker_network:
     name: github-webhook-handler
 
 - name: network-wiki
-  docker_network:
+  community.docker.docker_network:
     name: wiki
 
 - name: network-letsencrypt
-  docker_network:
+  community.docker.docker_network:
     name: letsencrypt
 
 - name: network-webmisc
-  docker_network:
+  community.docker.docker_network:
     name: webmisc
 
 - name: network-files
-  docker_network:
+  community.docker.docker_network:
     name: files
 
+- name: network-vaultwarden
+  community.docker.docker_network:
+    name: vaultwarden
+
 - name: stat-haproxy-pem
-  stat:
+  ansible.builtin.stat:
     path: /etc/letsencrypt/haproxy.pem
   register: stat_haproxy_pem_result
 
 - name: oneshot-container-letsencrypt
   when: not stat_haproxy_pem_result.stat.exists
-  docker_container:
+  community.docker.docker_container:
     name: letsencrypt-oneshot
     image: ilikejam/letsencrypt
     user: '{{ users["certbot"]["uid"] }}:{{ docker_gid }}'
@@ -38,13 +42,13 @@
     published_ports: 80:8000
     command: >
       bash -c 'certbot certonly --standalone --preferred-challenges http-01 --http-01-port 8000 --work-dir /var/tmp --logs-dir /var/tmp --agree-tos
-      --non-interactive --cert-name this -m dave@davidstark.name -d {{ wiki_domain }} && cat /etc/letsencrypt/live/this/fullchain.pem
+      --non-interactive --cert-name this -m dave@davidstark.name -d {{ wiki_domain }},{{ vaultwarden_domain }} && cat /etc/letsencrypt/live/this/fullchain.pem
       /etc/letsencrypt/live/this/privkey.pem  > /etc/letsencrypt/haproxy.pem'
     restart_policy: "no"
     detach: false
 
 - name: container-github-webhook-handler
-  docker_container:
+  community.docker.docker_container:
     name: github-webhook-handler
     image: ilikejam/github-webhook-handler
     restart_policy: always
@@ -68,7 +72,7 @@
     purge_networks: true
 
 - name: container-letsencrypt
-  docker_container:
+  community.docker.docker_container:
     name: letsencrypt
     image: ilikejam/letsencrypt
     mounts:
@@ -92,7 +96,7 @@
     purge_networks: true
 
 - name: container-gollum
-  docker_container:
+  community.docker.docker_container:
     name: wiki
     image: ilikejam/gollum
     user: '{{ users["wiki"]["uid"] }}:{{ users["wiki"]["gid"] }}'
@@ -107,7 +111,7 @@
     purge_networks: true
 
 - name: container-webmisc
-  docker_container:
+  community.docker.docker_container:
     name: webmisc
     image: python:3-slim
     user: '{{ users["webmisc"]["uid"] }}:{{ users["webmisc"]["gid"] }}'
@@ -124,7 +128,7 @@
     purge_networks: true
 
 - name: container-files
-  docker_container:
+  community.docker.docker_container:
     name: files
     image: python:3-slim
     user: '{{ users["files"]["uid"] }}:{{ users["files"]["gid"] }}'
@@ -140,8 +144,26 @@
     networks_cli_compatible: true
     purge_networks: true
 
+- name: container-vaultwarden
+  community.docker.docker_container:
+    name: vaultwarden
+    image: vaultwarden/server
+    user: '{{ users["vaultwarden"]["uid"] }}:{{ users["vaultwarden"]["gid"] }}'
+    env:
+      "ROCKET_PORT": "8000"
+      "SIGNUPS_ALLOWED": "false"
+    mounts:
+      - type: bind
+        source: /var/dockerbind/vaultwarden
+        target: /data
+    networks:
+      - name: vaultwarden
+    restart_policy: always
+    networks_cli_compatible: true
+    purge_networks: true
+
 - name: container-haproxy
-  docker_container:
+  community.docker.docker_container:
     name: haproxy
     image: haproxy:2.0
     user: '{{ users["haproxy"]["uid"] }}:{{ users["haproxy"]["gid"] }}'
@@ -154,7 +176,7 @@
         source: /etc/letsencrypt
         target: /etc/letsencrypt
         read_only: true
-    published_ports: ["80:8080", "443:8443", "[::]:80:8080", "[::]:443:8443"]
+    published_ports: ["0.0.0.0:80:8080", "0.0.0.0:443:8443", "[::]:80:8080", "[::]:443:8443"]
     restart_policy: always
     networks:
       - name: bridge
@@ -163,5 +185,6 @@
       - name: letsencrypt
       - name: webmisc
       - name: files
+      - name: vaultwarden
     networks_cli_compatible: true
     purge_networks: true

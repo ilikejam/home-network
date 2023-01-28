@@ -1,11 +1,11 @@
 ---
 - name: inst-git
-  package:
+  ansible.builtin.package:
     name: git
     state: present
 
 - name: checkout-home-network-repo
-  git:
+  ansible.builtin.git:
     repo: https://github.com/ilikejam/home-network.git
     dest: "{{ config_repo }}"
     version: master

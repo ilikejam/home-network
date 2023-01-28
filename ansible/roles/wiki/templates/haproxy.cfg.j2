@@ -54,6 +54,7 @@ frontend https_in
     acl ico_pth path_beg -i /favicons/
     acl file_pth path_beg -i /files/
     acl wiki_hdr hdr(host) -i {{ wiki_domain }}
+    acl vaultwarden_hdr hdr(host) -i {{ vaultwarden_domain }}
 
     use_backend bare_domain_redirect if bare_domain_hdr
     use_backend github-webhook-handler if webhook_pth METH_POST
@@ -61,6 +62,7 @@ frontend https_in
     use_backend webmisc if ico_pth METH_GET
     use_backend files if file_pth METH_GET
     use_backend wiki if wiki_hdr METH_GET
+    use_backend vaultwarden if vaultwarden_hdr
 
 listen bare_domain_redirect_listener
     bind 127.0.0.1:8001
@@ -85,3 +87,6 @@ backend webmisc
 backend files
     server files files:8000 resolvers docker check
     http-request set-path "%[path,regsub(^/files/,/)]"
+
+backend vaultwarden
+    server vaultwarden vaultwarden:8000 resolvers docker check

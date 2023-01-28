@@ -1,3 +1,4 @@
+---
 config_repo: /var/tmp/home-network
 users:
   github_webhook:
@@ -18,3 +19,6 @@ users:
   files:
     uid: 2005
     gid: 2005
+  vaultwarden:
+    uid: 2006
+    gid: 2006

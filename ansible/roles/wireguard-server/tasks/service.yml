@@ -1,18 +1,18 @@
 ---
 - name: service-wireguard
-  service:
+  ansible.builtin.service:
     name: wg-quick@wg0
     state: started
     enabled: true
 
 - name: service-iptables
-  service:
+  ansible.builtin.service:
     name: iptables
     enabled: true
   when: ansible_facts['os_family'] == "RedHat"
 
 - name: service-netfilter-persistent
-  service:
+  ansible.builtin.service:
     name: netfilter-persistent
     enabled: true
   when: ansible_facts['os_family'] == "Debian"

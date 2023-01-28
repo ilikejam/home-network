@@ -1,6 +1,6 @@
 ---
 - name: docker-pre-pkgs
-  package:
+  ansible.builtin.package:
     state: present
     name:
       - apt-transport-https
@@ -11,16 +11,16 @@
       - libffi-dev
 
 - name: docker-apt-key
-  apt_key:
+  ansible.builtin.apt_key:
     url: https://download.docker.com/linux/debian/gpg
     state: present
 
 - name: docker-repo
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "deb https://download.docker.com/{{ ansible_system | lower }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
 
 - name: install-docker-ce
-  package:
+  ansible.builtin.package:
     state: present
     name:
       - docker-ce
@@ -30,21 +30,21 @@
       - python-pip
 
 - name: docker-pre-pks-rm
-  package:
+  ansible.builtin.package:
     state: absent
     name: python-configparser
 
 - name: pip-docker
-  pip:
+  ansible.builtin.pip:
     name: docker
 
 - name: install-docker-compose
-  pip:
+  ansible.builtin.pip:
     name: docker-compose
     executable: pip3
 
 - name: file-etc-docker-daemon-json
-  copy:
+  ansible.builtin.copy:
     dest: /etc/docker/daemon.json
     src: daemon.json
     mode: '0644'
@@ -53,7 +53,7 @@
   notify: docker-changed
 
 - name: service-docker
-  service:
+  ansible.builtin.service:
     name: docker
     state: started
     enabled: true

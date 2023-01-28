@@ -1,11 +1,11 @@
 ---
 - name: check-github-secret
-  fail:
+  ansible.builtin.fail:
     msg: "GH_WEBHOOK_SECRET env var not defined"
   when: not lookup('env','GH_WEBHOOK_SECRET')
 
 - name: file-github-secret
-  copy:
+  ansible.builtin.copy:
     dest: "{{ github_webhook_secret_path }}"
     content: "{{ lookup('env','GH_WEBHOOK_SECRET') }}"
     mode: '0400'
@@ -13,7 +13,7 @@
     group: '{{ users["github_webhook"]["gid"] }}'
 
 - name: file-github-deploy-key
-  copy:
+  ansible.builtin.copy:
     dest: "{{ github_deploy_key_path }}"
     src: ~/.ssh/id_github_deploy
     mode: '0400'
@@ -21,7 +21,7 @@
     group: '{{ users["github_webhook"]["gid"] }}'
 
 - name: dir-var-dockerbind-repos
-  file:
+  ansible.builtin.file:
     path: /var/dockerbind/repos
     state: directory
     mode: '0755'
@@ -29,7 +29,7 @@
     group: '{{ users["github_webhook"]["gid"] }}'
 
 - name: dir-var-dockerbind-repos-wiki
-  file:
+  ansible.builtin.file:
     path: /var/dockerbind/repos/wiki
     state: directory
     mode: '0755'
@@ -37,7 +37,7 @@
     group: '{{ users["github_webhook"]["gid"] }}'
 
 - name: dir-etc-letsencrypt
-  file:
+  ansible.builtin.file:
     path: /etc/letsencrypt
     state: directory
     mode: '0755'
@@ -45,7 +45,7 @@
     group: '{{ docker_gid }}'
 
 - name: dir-etc-haproxy
-  file:
+  ansible.builtin.file:
     path: /etc/haproxy
     state: directory
     mode: '0755'
@@ -53,7 +53,7 @@
     group: '{{ users["haproxy"]["gid"] }}'
 
 - name: dircopy-var-dockerbind-webmisc
-  copy:
+  ansible.builtin.copy:
     src: icons/
     dest: /var/dockerbind/webmisc
     mode: '0644'
@@ -61,15 +61,23 @@
     group: root
 
 - name: dir-var-dockerbind-files
-  file:
+  ansible.builtin.file:
     path: /var/dockerbind/files
     state: directory
     mode: '0755'
     owner: dave
     group: dave
 
+- name: dir-var-dockerbind-vaultwarden
+  ansible.builtin.file:
+    path: /var/dockerbind/vaultwarden
+    state: directory
+    mode: '0700'
+    owner: "{{ users['vaultwarden']['uid'] }}"
+    group: "{{ users['vaultwarden']['gid'] }}"
+
 - name: template-haproxy-cfg
-  template:
+  ansible.builtin.template:
     src: haproxy.cfg.j2
     dest: /etc/haproxy/haproxy.cfg
     owner: root

@@ -1,6 +1,6 @@
 ---
 - name: dir-var-dockerbind-unifi-data
-  file:
+  ansible.builtin.file:
     path: /var/dockerbind/unifi/data
     state: directory
     mode: '0755'
@@ -8,7 +8,7 @@
     group: 999
 
 - name: dir-var-dockerbind-unifi-log
-  file:
+  ansible.builtin.file:
     path: /var/dockerbind/unifi/log
     state: directory
     mode: '0755'

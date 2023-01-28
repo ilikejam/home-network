@@ -1,0 +1,15 @@
+---
+plugin: community.digitalocean.digitalocean
+attributes:
+  - tags
+  - id
+  - name
+  - networks
+  - region
+keyed_groups:
+  - key: do_tags
+leading_separator: false
+compose:
+  ansible_host: do_networks.v4 | selectattr('type','eq','public') | map(attribute='ip_address') | first
+groups:
+  digitalocean: true
