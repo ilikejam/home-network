@@ -1,5 +1,6 @@
 ---
 plugin: community.digitalocean.digitalocean
+api_token: "{{ lookup('community.general.bitwarden', 'DO_API_TOKEN', field='password')[0] }}"
 attributes:
   - tags
   - id

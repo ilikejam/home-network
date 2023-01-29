@@ -1,0 +1,26 @@
+---
+- name: dir-etc-vaultwarden
+  ansible.builtin.file:
+    path: /etc/vaultwarden
+    state: directory
+    mode: '0700'
+    owner: root
+    group: root
+
+- name: file-etc-vaultwarden-s3
+  ansible.builtin.template:
+    src: s3.j2
+    dest: /etc/vaultwarden/s3
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: cron-backup-vaultwarden
+  ansible.builtin.cron:
+    user: root
+    name: "Backup vaultwarden"
+    minute: 0
+    hour: 3
+    job: "/bin/tar czvf - /var/dockerbind/vaultwarden/ |
+          /bin/docker run -i --rm --env-file /etc/vaultwarden/s3 amazon/aws-cli \
+            s3 cp - s3://vaultwarden-backup-24984cbf-373f-4d86-9deb-94bb5bbe84fa/backup.tar.gz"

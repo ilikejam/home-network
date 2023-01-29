@@ -1,13 +1,8 @@
 ---
-- name: check-github-secret
-  ansible.builtin.fail:
-    msg: "GH_WEBHOOK_SECRET env var not defined"
-  when: not lookup('env','GH_WEBHOOK_SECRET')
-
 - name: file-github-secret
   ansible.builtin.copy:
     dest: "{{ github_webhook_secret_path }}"
-    content: "{{ lookup('env','GH_WEBHOOK_SECRET') }}"
+    content: "{{ lookup('community.general.bitwarden', 'wiki_GH_WEBHOOK_SECRET', field='password')[0] }}"
     mode: '0400'
     owner: '{{ users["github_webhook"]["uid"] }}'
     group: '{{ users["github_webhook"]["gid"] }}'
