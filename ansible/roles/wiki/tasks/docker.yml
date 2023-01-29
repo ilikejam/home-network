@@ -33,6 +33,7 @@
   community.docker.docker_container:
     name: letsencrypt-oneshot
     image: ilikejam/letsencrypt
+    pull: true
     user: '{{ users["certbot"]["uid"] }}:{{ docker_gid }}'
     mounts:
       - type: bind
@@ -51,6 +52,7 @@
   community.docker.docker_container:
     name: github-webhook-handler
     image: ilikejam/github-webhook-handler
+    pull: true
     restart_policy: always
     user: '{{ users["github_webhook"]["uid"] }}:{{ users["github_webhook"]["gid"] }}'
     mounts:
@@ -69,12 +71,14 @@
     networks:
       - name: github-webhook-handler
     networks_cli_compatible: true
+    exposed_ports: ["8000"]
     purge_networks: true
 
 - name: container-letsencrypt
   community.docker.docker_container:
     name: letsencrypt
     image: ilikejam/letsencrypt
+    pull: true
     mounts:
       - type: bind
         source: /etc/letsencrypt
@@ -99,6 +103,7 @@
   community.docker.docker_container:
     name: wiki
     image: ilikejam/gollum
+    pull: true
     user: '{{ users["wiki"]["uid"] }}:{{ users["wiki"]["gid"] }}'
     mounts:
       - type: bind
@@ -107,6 +112,7 @@
     networks:
       - name: wiki
     restart_policy: always
+    exposed_ports: ["8000"]
     networks_cli_compatible: true
     purge_networks: true
 
@@ -114,6 +120,7 @@
   community.docker.docker_container:
     name: webmisc
     image: python:3-slim
+    pull: true
     user: '{{ users["webmisc"]["uid"] }}:{{ users["webmisc"]["gid"] }}'
     mounts:
       - type: bind
@@ -131,6 +138,7 @@
   community.docker.docker_container:
     name: files
     image: python:3-slim
+    pull: true
     user: '{{ users["files"]["uid"] }}:{{ users["files"]["gid"] }}'
     mounts:
       - type: bind
@@ -148,6 +156,7 @@
   community.docker.docker_container:
     name: vaultwarden
     image: vaultwarden/server
+    pull: true
     user: '{{ users["vaultwarden"]["uid"] }}:{{ users["vaultwarden"]["gid"] }}'
     env:
       "ROCKET_PORT": "8000"
@@ -159,6 +168,7 @@
     networks:
       - name: vaultwarden
     restart_policy: always
+    exposed_ports: ["8000"]
     networks_cli_compatible: true
     purge_networks: true
 
@@ -166,6 +176,7 @@
   community.docker.docker_container:
     name: haproxy
     image: haproxy:2.0
+    pull: true
     user: '{{ users["haproxy"]["uid"] }}:{{ users["haproxy"]["gid"] }}'
     mounts:
       - type: bind
