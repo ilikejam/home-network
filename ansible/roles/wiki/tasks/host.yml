@@ -8,9 +8,9 @@
     group: '{{ users["github_webhook"]["gid"] }}'
 
 - name: file-github-deploy-key
-  ansible.builtin.copy:
+  ansible.builtin.template:
     dest: "{{ github_deploy_key_path }}"
-    src: ~/.ssh/id_github_deploy
+    src: id_github_deploy.j2
     mode: '0400'
     owner: '{{ users["github_webhook"]["uid"] }}'
     group: '{{ users["github_webhook"]["gid"] }}'
