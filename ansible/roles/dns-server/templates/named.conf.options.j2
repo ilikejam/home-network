@@ -1,0 +1,44 @@
+acl homenet {
+        localhost;
+        0.0.0.0/0;
+        {{ home_ip6_net }};
+        {{ home_ip6_vpn_net }};
+};
+
+options {
+	directory "/var/cache/bind";
+
+        recursion yes;
+
+        allow-query { homenet; };
+
+	forwarders {
+                1.1.1.1;
+                1.0.0.1;
+                2606:4700:4700::1111;
+                2606:4700:4700::1001;
+	};
+
+	//========================================================================
+	// If BIND logs error messages about the root key being expired,
+	// you will need to update your keys.  See https://www.isc.org/bind-keys
+	//========================================================================
+	dnssec-validation auto;
+
+	listen-on-v6 { any; };
+
+        max-cache-ttl 10800;
+        max-ncache-ttl 10800;
+};
+
+logging {
+        channel syslog {
+                syslog;
+                severity warning;
+                print-severity yes;
+                print-category yes;
+        };
+        category default {
+                syslog;
+        };
+};

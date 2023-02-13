@@ -5,3 +5,4 @@
 - import_playbook: profiles/vpn-server.yml
 - import_playbook: profiles/wiki.yml
 - import_playbook: profiles/unifi-controller.yml
+- import_playbook: profiles/dns-server.yml

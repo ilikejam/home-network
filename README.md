@@ -14,7 +14,9 @@ You'll need:
 
 Secrets are in bitwarden. Do:
 ```
+$ bw logout
 $ bw login
+$ bw sync
 $ bw unlock
 $ export BW_SESSION="xxxxx"
 ```

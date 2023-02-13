@@ -3,3 +3,6 @@ pi.home
 
 [vpn_server]
 pi.home
+
+[dns_server]
+pi.home
