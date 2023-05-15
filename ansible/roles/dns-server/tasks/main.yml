@@ -4,6 +4,15 @@
     state: present
     name: "bind9"
 
+- name: file-named-conf
+  ansible.builtin.copy:
+    src: "named.conf"
+    dest: "/etc/bind/named.conf"
+    owner: "root"
+    group: "bind"
+    mode: "0644"
+  notify: "bind-changed"
+
 - name: file-named-conf-local
   ansible.builtin.copy:
     src: "named.conf.local"
@@ -26,6 +35,24 @@
   ansible.builtin.template:
     src: "home.db.j2"
     dest: "/etc/bind/home.db"
+    owner: "root"
+    group: "bind"
+    mode: "0644"
+  notify: "bind-changed"
+
+- name: file-blocked_conf
+  ansible.builtin.template:
+    src: "blocked.conf.j2"
+    dest: "/etc/bind/named.conf.blocked"
+    owner: "root"
+    group: "bind"
+    mode: "0644"
+  notify: "bind-changed"
+
+- name: blocked_db
+  ansible.builtin.copy:
+    src: "blocked.db"
+    dest: "/etc/bind/blocked.db"
     owner: "root"
     group: "bind"
     mode: "0644"

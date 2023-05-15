@@ -3,3 +3,4 @@ home_ip4_net: "{{ lookup('community.general.bitwarden', 'home_networks', field='
 home_ip6_net: "{{ lookup('community.general.bitwarden', 'home_networks', field='ip6_subnet')[0] }}"
 home_ip6_vpn_net: "{{ lookup('community.general.bitwarden', 'home_networks', field='ip6_vpn_subnet')[0] }}"
 home_zone_file: "{{ lookup('community.general.bitwarden', 'home_networks', field='home_zone_file')[0] | b64decode }}"
+blocked_conf_file: "{{ lookup('community.general.bitwarden', 'home_networks', field='blocked_conf_file')[0] | b64decode }}"

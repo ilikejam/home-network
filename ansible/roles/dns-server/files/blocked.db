@@ -1,0 +1,16 @@
+;
+; BIND data file for blocked domains
+;
+$TTL    3600
+@       IN      SOA     pi.home blocked.pi.home. (
+                            2014052102         ; Serial
+                                  7200         ; Refresh
+                                   120         ; Retry
+                               2419200         ; Expire
+                                  3600)        ; Default TTL
+;
+@       IN      NS      pi.home.
+@               A       127.0.0.1
+*       IN      A       127.0.0.1
+@               AAAA    ::1
+*       IN      AAAA    ::1
