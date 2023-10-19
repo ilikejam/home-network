@@ -8,7 +8,7 @@
   ansible.posix.authorized_key:
     user: dave
     state: present
-    key: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFWtS559uXlxxBet3D33//G5cqnnRI2IdpSoVNzOgymk'
+    key: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDFQZWvYD2h8auZFkFYoikw2CxRkXNXXEB77QTYCpoKfDrLylha0Bqq+EgAswABI1BA0lNYwDwo03dVlY3w3P9lWpzTCt3a1th1qBzycMKA9RwKtZGFOkdIMWbfO7SrPI9lH1xVHYiGTWJPZS1bHdLapClmtExZ/20BfrEiXKgFv07IyGUZZR0hX3zqrUdZP5RESOUMgy8M6iDVja0ZB8wdl/sAJ0Ni8wX76x0ZBk8iDrILcXGDeJcZeYTj8UYNJkyF5p7XkONaAubqrwQGKydaYxM5+IvbHLmFmfbNCxDC1dZ7jirnGu24t67rGR4k1geyGeHekK4oB+ArmvzTAn62f6eIony0ZC0uEa4VGJIGHpLoxQOkBeBRrfPOnwuoKOaeX/ezMIazfArNm0xD0DZCHYMhpmAvyxObzOWELaugEDiHMp/NkSXlLs3ugFZuI0jhgKcM41mwWRXGdo36CVPYTcwxbxiQt4LaM9tiIoWIXUYsGRrVhwvrk5fmx0QCFBU='
 
 - name: sshkey-dave-work
   ansible.posix.authorized_key:
