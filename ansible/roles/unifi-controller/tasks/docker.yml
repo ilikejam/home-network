@@ -2,7 +2,7 @@
 - name: container-unifi-controller
   docker_container:
     name: unifi
-    image: jacobalberty/unifi:v7.3.76
+    image: jacobalberty/unifi:v7.5.176
     restart_policy: always
     user: unifi
     mounts:
