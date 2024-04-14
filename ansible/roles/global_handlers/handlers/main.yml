@@ -1,42 +1,42 @@
 ---
-- name: ssh-restart
+- name: Restart ssh
   listen: ssh-changed
   ansible.builtin.service:
     name: "{{ ssh_service }}"
     state: restarted
 
-- name: journald-restart
+- name: Restart journald
   listen: journald-changed
   ansible.builtin.service:
     name: systemd-journald
     state: restarted
   notify: journald-flush
 
-- name: docker-restart
+- name: Restart docker
   listen: docker-changed
   ansible.builtin.service:
     name: docker
     state: restarted
 
-- name: journald-flush
+- name: Flush journald
   ansible.builtin.command:
     cmd: /usr/bin/journalctl --flush
 
-- name: grub-rebuild
+- name: Rebuild grub
   listen: kernel-changed
   ansible.builtin.command:
     cmd: /usr/sbin/grub2-mkconfig -o /boot/grub2/grub.cfg
   notify: reboot
 
-- name: iptables-save # noqa command-instead-of-module
+- name: Run iptables-save # noqa command-instead-of-module
   listen: iptables-changed
   ansible.builtin.command:
     cmd: service iptables save
 
-- name: apt-autoremove
+- name: Run apt autoremove
   ansible.builtin.command:
     cmd: /usr/bin/apt -y autoremove
 
-- name: reboot-host-now
+- name: Reboot NOW
   listen: reboot
   ansible.builtin.reboot:

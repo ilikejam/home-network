@@ -1,5 +1,5 @@
 ---
-- name: inst-wireguard
+- name: install-redhat | Install wireguard
   ansible.builtin.dnf:
     state: present
     name:

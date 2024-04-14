@@ -1,5 +1,5 @@
 ---
-- name: inst-wireguard
+- name: install-debian | Install wireguard
   ansible.builtin.package:
     state: present
     name:

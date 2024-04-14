@@ -1,10 +1,10 @@
 ---
-- name: yum-repo-docker-ce
+- name: redhat | Add docker repo
   ansible.builtin.command:
     cmd: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
     creates: /etc/yum.repos.d/docker-ce.repo
 
-- name: install-docker-ce
+- name: redhat | Install docker-ce
   ansible.builtin.package:
     state: present
     name:
@@ -13,18 +13,18 @@
       - containerd.io
       - python-pip
 
-- name: install-docker-compose
+- name: redhat | Install docker-compose
   ansible.builtin.get_url:
     url: https://github.com/docker/compose/releases/download/1.25.5/docker-compose-Linux-x86_64
     dest: /usr/local/bin/docker-compose
     mode: '0755'
     checksum: sha256:1cb7ecccc17c8d5f1888f9e2b3211b07e35c86d0010a6c0f711fe65ef5b69528
 
-- name: pip-docker
+- name: redhat | Install docker pip
   ansible.builtin.pip:
     name: docker
 
-- name: file-etc-docker-daemon-json
+- name: redhat | Add docker daemon.json
   ansible.builtin.copy:
     dest: /etc/docker/daemon.json
     src: daemon.json
@@ -33,7 +33,7 @@
     group: root
   notify: docker-changed
 
-- name: service-docker
+- name: redhat | Start docker
   ansible.builtin.service:
     name: docker
     state: started

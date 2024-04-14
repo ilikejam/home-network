@@ -1,10 +1,19 @@
 ---
-- include_tasks: install-redhat.yml
+- name: Include install-redhat.yml
+  ansible.builtin.include_tasks: install-redhat.yml
   when: ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution'] != "Fedora"
-- include_tasks: install-debian.yml
+- name: Include install-debian.yml
+  ansible.builtin.include_tasks: install-debian.yml
   when: ansible_facts['os_family'] == "Debian"
-- include_tasks: config.yml
-- include_tasks: iptables.yml
-- include_tasks: sysctl.yml
-- include_tasks: service.yml
-- include_tasks: scripts.yml
+- name: Include config.yml
+  ansible.builtin.include_tasks: config.yml
+  tags:
+    - wireguard-init
+- name: Include iptables.yml
+  ansible.builtin.include_tasks: iptables.yml
+- name: Include sysctl.yml
+  ansible.builtin.include_tasks: sysctl.yml
+- name: Include service.yml
+  ansible.builtin.include_tasks: service.yml
+- name: Include scripts.yml
+  ansible.builtin.include_tasks: scripts.yml

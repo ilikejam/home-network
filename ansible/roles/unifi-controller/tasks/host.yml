@@ -1,5 +1,5 @@
 ---
-- name: dir-var-dockerbind-unifi-data
+- name: host | Create /var/dockerbind/unifi/data
   ansible.builtin.file:
     path: /var/dockerbind/unifi/data
     state: directory
@@ -7,7 +7,7 @@
     owner: 999
     group: 999
 
-- name: dir-var-dockerbind-unifi-log
+- name: host | Create /var/dockerbind/unifi/log
   ansible.builtin.file:
     path: /var/dockerbind/unifi/log
     state: directory

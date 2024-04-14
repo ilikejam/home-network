@@ -1,5 +1,5 @@
 ---
-- name: inst-extra-repos-redhat
+- name: redhat | Add EPEL/EL repos
   ansible.builtin.package:
     state: present
     name:

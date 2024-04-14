@@ -1,9 +1,12 @@
 ---
-- include_tasks: debian.yml
+- name: Include debian.yml
+  ansible.builtin.include_tasks: debian.yml
   when: ansible_facts['os_family'] == "Debian"
 
-- include_tasks: pi.yml
+- name: Include pi.yml
+  ansible.builtin.include_tasks: pi.yml
   when: ansible_facts['architecture'] == "armv7l" or ansible_facts['architecture'] == "aarch64"
 
-- include_tasks: redhat.yml
+- name: Include redhat.yml
+  ansible.builtin.include_tasks: redhat.yml
   when: ansible_facts['os_family'] == "RedHat"

@@ -1,16 +1,19 @@
 ---
-- name: user-dave
+- name: Set dave shell
   ansible.builtin.user:
     name: dave
     shell: /bin/bash
 
-- name: sshkey-dave-mbp
+- name: Add sshkey-dave-mbp
   ansible.posix.authorized_key:
     user: dave
     state: present
-    key: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDFQZWvYD2h8auZFkFYoikw2CxRkXNXXEB77QTYCpoKfDrLylha0Bqq+EgAswABI1BA0lNYwDwo03dVlY3w3P9lWpzTCt3a1th1qBzycMKA9RwKtZGFOkdIMWbfO7SrPI9lH1xVHYiGTWJPZS1bHdLapClmtExZ/20BfrEiXKgFv07IyGUZZR0hX3zqrUdZP5RESOUMgy8M6iDVja0ZB8wdl/sAJ0Ni8wX76x0ZBk8iDrILcXGDeJcZeYTj8UYNJkyF5p7XkONaAubqrwQGKydaYxM5+IvbHLmFmfbNCxDC1dZ7jirnGu24t67rGR4k1geyGeHekK4oB+ArmvzTAn62f6eIony0ZC0uEa4VGJIGHpLoxQOkBeBRrfPOnwuoKOaeX/ezMIazfArNm0xD0DZCHYMhpmAvyxObzOWELaugEDiHMp/NkSXlLs3ugFZuI0jhgKcM41mwWRXGdo36CVPYTcwxbxiQt4LaM9tiIoWIXUYsGRrVhwvrk5fmx0QCFBU='
+    key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDFQZWvYD2h8auZFkFYoikw2CxRkXNXXEB77QTYCpoKfDrLylha0Bqq+EgAswABI1BA0lNYwDwo03dVlY3w3P9lWpzTCt3a1th1qBzycMKA9RwKt\
+    ZGFOkdIMWbfO7SrPI9lH1xVHYiGTWJPZS1bHdLapClmtExZ/20BfrEiXKgFv07IyGUZZR0hX3zqrUdZP5RESOUMgy8M6iDVja0ZB8wdl/sAJ0Ni8wX76x0ZBk8iDrILcXGDeJcZeYTj8UYNJkyF5p7XkONa\
+    AubqrwQGKydaYxM5+IvbHLmFmfbNCxDC1dZ7jirnGu24t67rGR4k1geyGeHekK4oB+ArmvzTAn62f6eIony0ZC0uEa4VGJIGHpLoxQOkBeBRrfPOnwuoKOaeX/ezMIazfArNm0xD0DZCHYMhpmAvyxObzOW\
+    ELaugEDiHMp/NkSXlLs3ugFZuI0jhgKcM41mwWRXGdo36CVPYTcwxbxiQt4LaM9tiIoWIXUYsGRrVhwvrk5fmx0QCFBU="
 
-- name: sshkey-dave-work
+- name: Add sshkey-dave-work
   ansible.posix.authorized_key:
     user: dave
     state: present
@@ -20,13 +23,13 @@
     QcWGmxVLKpJrWfx5k7zT3OXTMp1gxOZSeWuLxwEi44TkT+7+/0JBJ2OrammPRzBTZWeNmwmD4H48KLtNTPD4s8n5TdmbXSBj85gIIhYpxUr+MkNTOU/5LmkTh0ojhtpqZX+02iQkuzsiDZ4JqbF+EfL6N8L\
     ZqMuuJsl3dsulAN7GzyPAygp0WXHFdtSOzMfqY3KU+n+3QRXdTyBCGrvbDNPNxdLN5B4mrN5GUC84oSFVbg7hbsFmbra7YjD3t2ohG0tkMMQ=="
 
-- name: sshkey-dave-juice-s22
+- name: Add sshkey-dave-juice-s22
   ansible.posix.authorized_key:
     user: dave
     state: present
-    key: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICh7yL3uNu7Ul7thxpXaIwWlm+0XE7vpcALs+y/lRai/'
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICh7yL3uNu7Ul7thxpXaIwWlm+0XE7vpcALs+y/lRai/"
 
-- name: sudo-dave
+- name: Add NOPASSWD rule for dave
   ansible.builtin.lineinfile:
     path: /etc/sudoers
     regexp: '^dave '

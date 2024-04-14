@@ -1,4 +1,7 @@
 ---
-- include_tasks: host.yml
-- include_tasks: docker.yml
-- include_tasks: cron.yml
+- name: Include host.yml
+  ansible.builtin.include_tasks: host.yml
+- name: Include docker.yml
+  ansible.builtin.include_tasks: docker.yml
+- name: Include cron.yml
+  ansible.builtin.include_tasks: cron.yml

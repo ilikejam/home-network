@@ -1,29 +1,5 @@
 ---
-- name: inst-dirmngr
-  ansible.builtin.apt:
-    name: dirmngr
-    install_recommends: true
-    update_cache: true
-  when: ansible_facts['os_family'] == "Debian"
-
-- name: stretch-backports-key-8B48AD6246925553
-  ansible.builtin.apt_key:
-    keyserver: keyserver.ubuntu.com
-    id: 8B48AD6246925553
-  when: ansible_facts['architecture'] == "armv7l" and ansible_facts['distribution_release'] == "stretch"
-
-- name: stretch-backports-key-7638D0442B90D010
-  ansible.builtin.apt_key:
-    keyserver: keyserver.ubuntu.com
-    id: 7638D0442B90D010
-  when: ansible_facts['architecture'] == "armv7l" and ansible_facts['distribution_release'] == "stretch"
-
-- name: stretch-backports
-  ansible.builtin.apt_repository:
-    repo: deb http://deb.debian.org/debian stretch-backports main
-  when: ansible_facts['architecture'] == "armv7l" and ansible_facts['distribution_release'] == "stretch"
-
-- name: apt-get-update
+- name: Update apt cache
   ansible.builtin.apt:
     update_cache: true
   when: ansible_facts['os_family'] == "Debian"

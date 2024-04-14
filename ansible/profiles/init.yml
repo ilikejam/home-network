@@ -1,6 +1,0 @@
----
-- hosts: init
-  roles:
-    - global_handlers
-    - dave
-    - root

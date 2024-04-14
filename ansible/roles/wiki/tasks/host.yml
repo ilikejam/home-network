@@ -1,5 +1,5 @@
 ---
-- name: file-github-secret
+- name: host | Add Github webhook secret
   ansible.builtin.copy:
     dest: "{{ github_webhook_secret_path }}"
     content: "{{ lookup('community.general.bitwarden', 'wiki_GH_WEBHOOK_SECRET', field='password')[0] }}"
@@ -7,7 +7,7 @@
     owner: '{{ users["github_webhook"]["uid"] }}'
     group: '{{ users["github_webhook"]["gid"] }}'
 
-- name: file-github-deploy-key
+- name: host | Add Github deploy key
   ansible.builtin.template:
     dest: "{{ github_deploy_key_path }}"
     src: id_github_deploy.j2
@@ -15,7 +15,7 @@
     owner: '{{ users["github_webhook"]["uid"] }}'
     group: '{{ users["github_webhook"]["gid"] }}'
 
-- name: dir-var-dockerbind-repos
+- name: host | Create /var/dockerbind/repos
   ansible.builtin.file:
     path: /var/dockerbind/repos
     state: directory
@@ -23,7 +23,7 @@
     owner: '{{ users["github_webhook"]["uid"] }}'
     group: '{{ users["github_webhook"]["gid"] }}'
 
-- name: dir-var-dockerbind-repos-wiki
+- name: host | Create /var/dockerbind/repos/wiki
   ansible.builtin.file:
     path: /var/dockerbind/repos/wiki
     state: directory
@@ -31,7 +31,7 @@
     owner: '{{ users["github_webhook"]["uid"] }}'
     group: '{{ users["github_webhook"]["gid"] }}'
 
-- name: dir-etc-letsencrypt
+- name: host | Create /etc/letsencrypt
   ansible.builtin.file:
     path: /etc/letsencrypt
     state: directory
@@ -39,7 +39,7 @@
     owner: '{{ users["certbot"]["uid"] }}'
     group: '{{ docker_gid }}'
 
-- name: dir-etc-haproxy
+- name: host | Create /etc/haproxy
   ansible.builtin.file:
     path: /etc/haproxy
     state: directory
@@ -47,7 +47,7 @@
     owner: '{{ users["haproxy"]["uid"] }}'
     group: '{{ users["haproxy"]["gid"] }}'
 
-- name: dircopy-var-dockerbind-webmisc
+- name: host | Create /var/dockerbind/webmisc
   ansible.builtin.copy:
     src: icons/
     dest: /var/dockerbind/webmisc
@@ -55,7 +55,7 @@
     owner: root
     group: root
 
-- name: dir-var-dockerbind-files
+- name: host | Create /var/dockerbind/files
   ansible.builtin.file:
     path: /var/dockerbind/files
     state: directory
@@ -63,7 +63,7 @@
     owner: dave
     group: dave
 
-- name: dir-var-dockerbind-vaultwarden
+- name: host | Create /var/dockerbind/vaultwarden
   ansible.builtin.file:
     path: /var/dockerbind/vaultwarden
     state: directory
@@ -71,7 +71,7 @@
     owner: "{{ users['vaultwarden']['uid'] }}"
     group: "{{ users['vaultwarden']['gid'] }}"
 
-- name: template-haproxy-cfg
+- name: host | Create haproxy.cfg
   ansible.builtin.template:
     src: haproxy.cfg.j2
     dest: /etc/haproxy/haproxy.cfg

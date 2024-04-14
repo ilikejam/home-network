@@ -1,5 +1,5 @@
 ---
-- name: dir-etc-vaultwarden
+- name: cron | Create /etc/vaultwarden
   ansible.builtin.file:
     path: /etc/vaultwarden
     state: directory
@@ -7,7 +7,7 @@
     owner: root
     group: root
 
-- name: file-etc-vaultwarden-s3
+- name: cron | Create /etc/vaultwarden/s3 env file
   ansible.builtin.template:
     src: s3.j2
     dest: /etc/vaultwarden/s3
@@ -15,7 +15,7 @@
     group: root
     mode: '0600'
 
-- name: cron-backup-vaultwarden
+- name: cron | Create backup cron job
   ansible.builtin.cron:
     user: root
     name: "Backup vaultwarden"

@@ -1,5 +1,5 @@
 ---
-- name: crashkernel-set-redhat
+- name: Disable crashkernel
   ansible.builtin.lineinfile:
     path: /etc/default/grub
     regexp: '^GRUB_CMDLINE_LINUX='

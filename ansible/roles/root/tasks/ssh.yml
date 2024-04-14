@@ -1,12 +1,12 @@
 ---
-- name: ssh-disable-root
+- name: ssh | Disable root login
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     regexp: '^PermitRootLogin'
     line: PermitRootLogin no
   notify: ssh-changed
 
-- name: root-rm-authorized-keys
+- name: ssh | Remove root authorized_keys
   ansible.builtin.file:
     path: /root/.ssh/authorized_keys
     state: absent

@@ -1,5 +1,6 @@
 ---
-- hosts: vpn_server
+- name: "Profile: vpn-server"
+  hosts: vpn_server
   roles:
     - global_handlers
     - wireguard-server

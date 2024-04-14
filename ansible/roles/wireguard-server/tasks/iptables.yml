@@ -2,19 +2,19 @@
 
 # FIXME - Move default forward-drop to a general security role
 
-- name: iptables-forward-reject
+- name: iptables | Forward drop ipv4
   ansible.builtin.iptables:
     ip_version: ipv4
     chain: FORWARD
     policy: DROP
 
-- name: ip6tables-forward-reject
+- name: iptables | Forward drop ipv6
   ansible.builtin.iptables:
     ip_version: ipv6
     chain: FORWARD
     policy: DROP
 
-- name: iptables-default
+- name: iptables | Create /etc/iptables/rules.v4
   ansible.builtin.copy:
     src: rules.v4
     dest: /etc/iptables/rules.v4
@@ -23,7 +23,7 @@
     mode: '0644'
   when: ansible_facts['os_family'] == "Debian"
 
-- name: ip6tables-default
+- name: iptables | Create /etc/iptables/rules.v6
   ansible.builtin.copy:
     src: rules.v6
     dest: /etc/iptables/rules.v6

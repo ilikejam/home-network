@@ -1,5 +1,6 @@
 ---
-- hosts: pi.home
+- name: "Profile: pi"
+  hosts: rpi
   roles:
     - secure
     - global_handlers

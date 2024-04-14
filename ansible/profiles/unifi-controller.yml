@@ -1,5 +1,6 @@
 ---
-- hosts: pi.home
+- name: "Profile: unifi-controller"
+  hosts: unifi_controller
   roles:
     - global_handlers
     - docker

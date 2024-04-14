@@ -1,5 +1,5 @@
 ---
-- name: inst-tools-redhat
+- name: redhat | Install debug tools
   ansible.builtin.package:
     state: present
     name:

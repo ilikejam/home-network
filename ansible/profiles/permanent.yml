@@ -1,5 +1,6 @@
 ---
-- hosts: permanent
+- name: "Profile: permanent"
+  hosts: permanent
   roles:
     - global_handlers
     - secure

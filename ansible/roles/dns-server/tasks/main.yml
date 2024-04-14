@@ -1,10 +1,10 @@
 ---
-- name: inst-bind
+- name: Install bind9
   ansible.builtin.package:
     state: present
     name: "bind9"
 
-- name: file-named-conf
+- name: Add named.conf
   ansible.builtin.copy:
     src: "named.conf"
     dest: "/etc/bind/named.conf"
@@ -13,7 +13,7 @@
     mode: "0644"
   notify: "bind-changed"
 
-- name: file-named-conf-local
+- name: Add named.conf.local
   ansible.builtin.copy:
     src: "named.conf.local"
     dest: "/etc/bind/named.conf.local"
@@ -22,7 +22,7 @@
     mode: "0644"
   notify: "bind-changed"
 
-- name: file-named-conf-options
+- name: Add named.conf.options
   ansible.builtin.template:
     src: "named.conf.options.j2"
     dest: "/etc/bind/named.conf.options"
@@ -31,7 +31,7 @@
     mode: "0644"
   notify: "bind-changed"
 
-- name: file-named-homd_db
+- name: Add home.db
   ansible.builtin.template:
     src: "home.db.j2"
     dest: "/etc/bind/home.db"
@@ -40,7 +40,7 @@
     mode: "0644"
   notify: "bind-changed"
 
-- name: file-blocked_conf
+- name: Add named.conf.blocked
   ansible.builtin.template:
     src: "blocked.conf.j2"
     dest: "/etc/bind/named.conf.blocked"
@@ -49,7 +49,7 @@
     mode: "0644"
   notify: "bind-changed"
 
-- name: blocked_db
+- name: Add blocked.db
   ansible.builtin.copy:
     src: "blocked.db"
     dest: "/etc/bind/blocked.db"
@@ -58,7 +58,7 @@
     mode: "0644"
   notify: "bind-changed"
 
-- name: service-bind9
+- name: Start bind9
   ansible.builtin.service:
     name: bind9
     state: started

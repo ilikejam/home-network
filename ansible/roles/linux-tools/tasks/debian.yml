@@ -1,5 +1,5 @@
 ---
-- name: inst-tools-debian
+- name: debian | Install debug tools
   ansible.builtin.apt:
     state: present
     name:

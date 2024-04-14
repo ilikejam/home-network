@@ -1,14 +1,13 @@
 ---
-- hosts: all
-
+- name: "Profile: all"
+  hosts: all
   pre_tasks:
-    - name: set-hostname
+    - name: Set hostname
       ansible.builtin.hostname:
         name: "{{ hostname }}"
-    - name: include-apt-update
+    - name: Include apt-update
       ansible.builtin.include_role:
         name: apt-update
-
   roles:
     - global_handlers
     - repos

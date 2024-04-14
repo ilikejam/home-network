@@ -1,4 +1,5 @@
 ---
-- hosts: dns_server
+- name: "Profile: dns-server"
+  hosts: dns_server
   roles:
     - dns-server

@@ -1,8 +1,8 @@
 ---
-- name: get-services
+- name: redhat | Get service info
   ansible.builtin.service_facts:
 
-- name: stop-network-services
+- name: redhat | Stop unused network services
   ansible.builtin.service:
     name: "{{ item }}"
     state: stopped
@@ -12,14 +12,14 @@
     - "rpcbind"
     - "postfix"
 
-- name: uninst-network-packages
+- name: redhat | Uninstall unused network services
   ansible.builtin.package:
     state: absent
     name:
       - rpcbind
       - postfix
 
-- name: remove-default-users
+- name: redhat | Remove default users
   ansible.builtin.user:
     name: "{{ item }}"
     state: absent
