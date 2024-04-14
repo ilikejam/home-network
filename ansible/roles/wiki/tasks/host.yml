@@ -4,32 +4,32 @@
     dest: "{{ github_webhook_secret_path }}"
     content: "{{ lookup('community.general.bitwarden', 'wiki_GH_WEBHOOK_SECRET', field='password')[0] }}"
     mode: '0400'
-    owner: '{{ users["github_webhook"]["uid"] }}'
-    group: '{{ users["github_webhook"]["gid"] }}'
+    owner: '{{ users["wiki"]["uid"] }}'
+    group: '{{ users["wiki"]["gid"] }}'
 
 - name: host | Add Github deploy key
   ansible.builtin.template:
     dest: "{{ github_deploy_key_path }}"
     src: id_github_deploy.j2
     mode: '0400'
-    owner: '{{ users["github_webhook"]["uid"] }}'
-    group: '{{ users["github_webhook"]["gid"] }}'
+    owner: '{{ users["wiki"]["uid"] }}'
+    group: '{{ users["wiki"]["gid"] }}'
 
 - name: host | Create /var/dockerbind/repos
   ansible.builtin.file:
     path: /var/dockerbind/repos
     state: directory
     mode: '0755'
-    owner: '{{ users["github_webhook"]["uid"] }}'
-    group: '{{ users["github_webhook"]["gid"] }}'
+    owner: '{{ users["wiki"]["uid"] }}'
+    group: '{{ users["wiki"]["gid"] }}'
 
 - name: host | Create /var/dockerbind/repos/wiki
   ansible.builtin.file:
     path: /var/dockerbind/repos/wiki
     state: directory
     mode: '0755'
-    owner: '{{ users["github_webhook"]["uid"] }}'
-    group: '{{ users["github_webhook"]["gid"] }}'
+    owner: '{{ users["wiki"]["uid"] }}'
+    group: '{{ users["wiki"]["gid"] }}'
 
 - name: host | Create /etc/letsencrypt
   ansible.builtin.file:

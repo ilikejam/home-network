@@ -54,7 +54,7 @@
     image: ilikejam/github-webhook-handler
     pull: true
     restart_policy: always
-    user: '{{ users["github_webhook"]["uid"] }}:{{ users["github_webhook"]["gid"] }}'
+    user: '{{ users["wiki"]["uid"] }}:{{ users["wiki"]["gid"] }}'
     mounts:
       - type: bind
         source: /var/dockerbind/repos
@@ -155,7 +155,7 @@
 - name: docker | Create vaultwarden container
   community.docker.docker_container:
     name: vaultwarden
-    image: vaultwarden/server:1.30.1
+    image: vaultwarden/server:1.30.5
     pull: true
     user: '{{ users["vaultwarden"]["uid"] }}:{{ users["vaultwarden"]["gid"] }}'
     env:
