@@ -1,4 +1,4 @@
 ---
-- name: Restart haproxy
+- name: Restart haproxy container
   ansible.builtin.shell:
     cmd: '! docker inspect haproxy || docker restart haproxy'

@@ -1,4 +1,4 @@
 ---
 hostname: "{{ do_name }}"
 ansible_ssh_common_args: -o StrictHostKeyChecking=no -l dave
-crashkernel: 'no'
+kernelargs: "console=ttyS0,115200n8 no_timer_check net.ifnames=0 crashkernel=no"

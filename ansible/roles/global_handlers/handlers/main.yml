@@ -22,10 +22,21 @@
   ansible.builtin.command:
     cmd: /usr/bin/journalctl --flush
 
-- name: Rebuild grub
+- name: Rebuild grub conf
   listen: kernel-changed
   ansible.builtin.command:
     cmd: /usr/sbin/grub2-mkconfig -o /boot/grub2/grub.cfg
+  notify: reboot
+
+- name: Rebuild grub grubby
+  listen: kernel-changed
+  ansible.builtin.command:
+    argv:
+      - /usr/sbin/grubby
+      - --update-kernel
+      - ALL
+      - --args
+      - "{{ kernelargs }}"
   notify: reboot
 
 - name: Run iptables-save # noqa command-instead-of-module

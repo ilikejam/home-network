@@ -4,4 +4,4 @@
   roles:
     - global_handlers
     - secure
-    - crashkernel
+    - kernel
