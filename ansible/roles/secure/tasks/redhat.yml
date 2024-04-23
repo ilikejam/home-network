@@ -18,10 +18,3 @@
     name:
       - rpcbind
       - postfix
-
-- name: redhat | Remove default users
-  ansible.builtin.user:
-    name: "{{ item }}"
-    state: absent
-  with_items:
-    - "centos"

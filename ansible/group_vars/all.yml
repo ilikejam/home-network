@@ -1,9 +1,6 @@
 ---
 config_repo: /var/tmp/home-network
 users:
-  github_webhook:
-    uid: 2000
-    gid: 2000
   certbot:
     uid: 2001
     gid: 2001
