@@ -60,8 +60,42 @@
     path: /var/dockerbind/files
     state: directory
     mode: '0755'
-    owner: dave
-    group: dave
+    owner: '{{ users["files"]["uid"] }}'
+    group: '{{ users["files"]["gid"] }}'
+
+- name: host | Create /etc/fileup dir
+  ansible.builtin.file:
+    path: /etc/fileup
+    state: directory
+    mode: '0700'
+    owner: root
+    group: root
+
+- name: host | Stat /etc/fileup/passwd
+  ansible.builtin.stat:
+    path: /etc/fileup/passwd
+  register: fileup_passwd
+
+- name: host | Add default /etc/fileup/passwd contents
+  ansible.builtin.copy:
+    dest: /etc/fileup/passwd
+    content: "{}"
+    mode: '0644'
+    owner: root
+    group: root
+  when: not fileup_passwd.stat.exists
+
+- name: host | Install pip pkg werkzeug
+  ansible.builtin.pip:
+    name: werkzeug
+
+- name: host | Create /usr/local/bin/passwd-fileup
+  ansible.builtin.copy:
+    dest: /usr/local/bin/passwd-fileup
+    src: passwd.py
+    mode: '0755'
+    owner: root
+    group: root
 
 - name: host | Create /var/dockerbind/vaultwarden
   ansible.builtin.file:

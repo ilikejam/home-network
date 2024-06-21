@@ -37,6 +37,8 @@ frontend https_in
 
     http-response set-header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
 
+    http-request set-var(txn.path) path
+
     capture request header Host len 256
     capture request header User-Agent len 256
 
@@ -52,15 +54,21 @@ frontend https_in
     acl ico_pth path_beg -i /favicon-32x32.png
     acl ico_pth path_beg -i /favicon.ico
     acl ico_pth path_beg -i /favicons/
-    acl file_pth path_beg -i /files/
+    acl bare_files_pth path /files
+    acl files_pth path_beg /files/
     acl wiki_hdr hdr(host) -i {{ wiki_domain }}
     acl vaultwarden_hdr hdr(host) -i {{ vaultwarden_domain }}
+    acl upload_pth path /upload
+    acl newfile_pth path /newfile
 
     use_backend bare_domain_redirect if bare_domain_hdr
+    use_backend bare_files_redirect if bare_files_pth
     use_backend github-webhook-handler if webhook_pth METH_POST
     use_backend letsencrypt if acme_pth
     use_backend webmisc if ico_pth METH_GET
-    use_backend files if file_pth METH_GET
+    use_backend files if files_pth METH_GET
+    use_backend fileup if upload_pth METH_GET
+    use_backend fileup if newfile_pth METH_POST
     use_backend wiki if wiki_hdr METH_GET
     use_backend vaultwarden if vaultwarden_hdr
 
@@ -71,6 +79,9 @@ listen bare_domain_redirect_listener
 backend bare_domain_redirect
     http-response set-header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
     server bare_domain_redirect_server 127.0.0.1:8001
+
+backend bare_files_redirect
+    http-request redirect code 301 prefix / append-slash
 
 backend github-webhook-handler
     server github-webhook-handler github-webhook-handler:8000 resolvers docker check
@@ -87,6 +98,14 @@ backend webmisc
 backend files
     server files files:8000 resolvers docker check
     http-request set-path "%[path,regsub(^/files/,/)]"
+    http-response set-header content-disposition "attachment"
+    http-response del-header content-disposition if { var(txn.path) /files/ }
+
+backend fileup
+    stick-table type ipv6 size 1m expire 10s store http_req_rate(10s)
+    http-request track-sc0 src
+    http-request deny deny_status 429 if { sc_http_req_rate(0) gt 5 }
+    server fileup fileup:8000 resolvers docker check
 
 backend vaultwarden
     server vaultwarden vaultwarden:8000 resolvers docker check

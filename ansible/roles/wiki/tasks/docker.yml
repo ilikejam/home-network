@@ -19,6 +19,10 @@
   community.docker.docker_network:
     name: files
 
+- name: docker | Create fileup network
+  community.docker.docker_network:
+    name: fileup
+
 - name: docker | Create vaultwarden network
   community.docker.docker_network:
     name: vaultwarden
@@ -144,11 +148,32 @@
       - type: bind
         source: /var/dockerbind/files
         target: /serve
+        read_only: true
     networks:
       - name: files
     restart_policy: always
     exposed_ports: ["8000"]
     command: "bash -c 'cd /serve && python -m http.server 8000'"
+    networks_cli_compatible: true
+    purge_networks: true
+
+- name: docker | Create fileup container
+  community.docker.docker_container:
+    name: fileup
+    image: ilikejam/file-upload
+    pull: true
+    user: '{{ users["files"]["uid"] }}:{{ users["files"]["gid"] }}'
+    mounts:
+      - type: bind
+        source: /var/dockerbind/files
+        target: /files
+      - type: bind
+        source: /etc/fileup/passwd
+        target: /passwd
+    networks:
+      - name: fileup
+    restart_policy: always
+    exposed_ports: ["8000"]
     networks_cli_compatible: true
     purge_networks: true
 
@@ -196,6 +221,7 @@
       - name: letsencrypt
       - name: webmisc
       - name: files
+      - name: fileup
       - name: vaultwarden
     networks_cli_compatible: true
     purge_networks: true
