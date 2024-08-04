@@ -180,7 +180,7 @@
 - name: docker | Create vaultwarden container
   community.docker.docker_container:
     name: vaultwarden
-    image: vaultwarden/server:1.30.5
+    image: vaultwarden/server:1.31.0
     pull: true
     user: '{{ users["vaultwarden"]["uid"] }}:{{ users["vaultwarden"]["gid"] }}'
     env:
