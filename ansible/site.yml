@@ -1,8 +1,15 @@
 ---
-- import_playbook: profiles/all.yml
-- import_playbook: profiles/pi.yml
-- import_playbook: profiles/permanent.yml
-- import_playbook: profiles/vpn-server.yml
-- import_playbook: profiles/wiki.yml
-- import_playbook: profiles/unifi-controller.yml
-- import_playbook: profiles/dns-server.yml
+- name: "Apply 'all' profile"
+  import_playbook: profiles/all.yml
+- name: "Apply 'pi' profile"
+  import_playbook: profiles/pi.yml
+- name: "Apply 'permanent' profile"
+  import_playbook: profiles/permanent.yml
+- name: "Apply 'vpn-server' profile"
+  import_playbook: profiles/vpn-server.yml
+- name: "Apply 'wiki' profile"
+  import_playbook: profiles/wiki.yml
+- name: "Apply 'unifi-controller' profile"
+  import_playbook: profiles/unifi-controller.yml
+- name: "Apply 'dns-server' profile"
+  import_playbook: profiles/dns-server.yml

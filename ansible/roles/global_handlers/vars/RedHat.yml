@@ -1,2 +1,2 @@
 ---
-ssh_service: sshd
+global_handlers_ssh_service: sshd

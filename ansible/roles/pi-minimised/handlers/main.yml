@@ -1,3 +1,4 @@
 ---
 - name: Remove swap
   ansible.builtin.command: /sbin/dphys-swapfile uninstall
+  changed_when: true

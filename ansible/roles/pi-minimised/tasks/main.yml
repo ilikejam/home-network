@@ -70,6 +70,7 @@
   ansible.builtin.command: /sbin/dphys-swapfile swapoff
   when: check_swap_result.stdout
   notify: remove-swap
+  changed_when: true
 
 - name: Deinstall pi crap
   ansible.builtin.package:

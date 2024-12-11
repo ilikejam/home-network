@@ -5,7 +5,7 @@
     state: directory
     owner: root
     group: systemd-journal
-    mode: 02755
+    mode: "02755"
 
 - name: Remove cloud-init-users sudo
   ansible.builtin.file:
