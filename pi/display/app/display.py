@@ -25,9 +25,7 @@
 # Adafruit Blinka to support CircuitPython libraries. CircuitPython does
 # not support PIL/pillow (python imaging library)!
 
-import subprocess
 import sys
-import time
 
 import adafruit_ssd1306
 import busio
