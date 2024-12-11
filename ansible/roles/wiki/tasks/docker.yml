@@ -76,7 +76,6 @@
       - name: github-webhook-handler
     networks_cli_compatible: true
     exposed_ports: ["8000"]
-    purge_networks: true
 
 - name: docker | Create letsencrypt container
   community.docker.docker_container:
@@ -101,7 +100,6 @@
     restart_policy: always
     exposed_ports: ["8000"]
     networks_cli_compatible: true
-    purge_networks: true
 
 - name: docker | Create gollum container
   community.docker.docker_container:
@@ -118,7 +116,6 @@
     restart_policy: always
     exposed_ports: ["8000"]
     networks_cli_compatible: true
-    purge_networks: true
 
 - name: docker | Create webmisc container
   community.docker.docker_container:
@@ -136,7 +133,6 @@
     exposed_ports: ["8000"]
     command: "bash -c 'cd /serve && python -m http.server 8000'"
     networks_cli_compatible: true
-    purge_networks: true
 
 - name: docker | Create files container
   community.docker.docker_container:
@@ -155,7 +151,6 @@
     exposed_ports: ["8000"]
     command: "bash -c 'cd /serve && python -m http.server 8000'"
     networks_cli_compatible: true
-    purge_networks: true
 
 - name: docker | Create fileup container
   community.docker.docker_container:
@@ -175,12 +170,11 @@
     restart_policy: always
     exposed_ports: ["8000"]
     networks_cli_compatible: true
-    purge_networks: true
 
 - name: docker | Create vaultwarden container
   community.docker.docker_container:
     name: vaultwarden
-    image: vaultwarden/server:1.32.4
+    image: vaultwarden/server:1.32.6
     pull: true
     user: '{{ users["vaultwarden"]["uid"] }}:{{ users["vaultwarden"]["gid"] }}'
     env:
@@ -195,7 +189,6 @@
     restart_policy: always
     exposed_ports: ["8000"]
     networks_cli_compatible: true
-    purge_networks: true
 
 - name: docker | Create haproxy container
   community.docker.docker_container:
@@ -224,4 +217,3 @@
       - name: fileup
       - name: vaultwarden
     networks_cli_compatible: true
-    purge_networks: true
