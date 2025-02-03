@@ -1,0 +1,26 @@
+---
+- name: cron | Create /etc/unifi
+  ansible.builtin.file:
+    path: /etc/unifi
+    state: directory
+    mode: '0700'
+    owner: root
+    group: root
+
+- name: cron | Create /etc/unifi/s3 env file
+  ansible.builtin.template:
+    src: s3.j2
+    dest: /etc/unifi/s3
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: cron | Unifi backup cron
+  ansible.builtin.cron:
+    user: root
+    name: "Backup vaultwarden"
+    minute: 0
+    hour: 3
+    job: "/bin/tar czvf - /var/dockerbind/unifi/data/backup/autobackup/ |
+          /bin/docker run -i --rm --env-file /etc/unifi/s3 amazon/aws-cli \
+            s3 cp - s3://unifi-backup-7d4687a9-2697-4f8e-95ab-ab80c99b80d5/backup.tar.gz"

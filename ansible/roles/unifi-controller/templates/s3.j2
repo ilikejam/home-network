@@ -1,0 +1,3 @@
+AWS_DEFAULT_REGION=eu-west-2
+AWS_ACCESS_KEY_ID={{ lookup('community.general.bitwarden', 'unifi_s3_upload', field='username')[0] }}
+AWS_SECRET_ACCESS_KEY={{ lookup('community.general.bitwarden', 'unifi_s3_upload', field='password')[0] }}
