@@ -4,5 +4,7 @@
     path: /etc/default/grub
     regexp: '^GRUB_CMDLINE_LINUX='
     line: 'GRUB_CMDLINE_LINUX="{{ kernelargs }}"'
-  notify: kernel-changed
+  notify:
+    - Rebuild grub conf
+    - Rebuild grub grubby
   when: ansible_facts['os_family'] == "RedHat"

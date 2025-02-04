@@ -34,3 +34,7 @@ Assign the floating IP that matches the docs DNS name in the DO UI, then assign 
 
 Run ansible again:
 `$ cd <ansible> && ansible-playbook -i digital_ocean.py -l <floatingIP> site.yml`
+
+### Wireguard
+
+If setting a Wireguard host up for the first time, run with `--tags all,wireguard-init`

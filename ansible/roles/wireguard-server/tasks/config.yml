@@ -27,7 +27,7 @@
   tags:
     - never
     - wireguard-init
-  notify: "wireguard-changed"
+  notify: Restart wg-quick@wg0
 
 - name: config | Add wireguard to /etc/services # noqa no-tabs
   ansible.builtin.lineinfile:

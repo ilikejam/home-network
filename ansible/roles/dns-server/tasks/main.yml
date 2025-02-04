@@ -11,7 +11,7 @@
     owner: "root"
     group: "bind"
     mode: "0644"
-  notify: "bind-changed"
+  notify: Reload bind
 
 - name: Add named.conf.local
   ansible.builtin.copy:
@@ -20,7 +20,7 @@
     owner: "root"
     group: "bind"
     mode: "0644"
-  notify: "bind-changed"
+  notify: Reload bind
 
 - name: Add named.conf.options
   ansible.builtin.template:
@@ -29,7 +29,7 @@
     owner: "root"
     group: "bind"
     mode: "0644"
-  notify: "bind-changed"
+  notify: Reload bind
 
 - name: Add home.db
   ansible.builtin.template:
@@ -38,7 +38,7 @@
     owner: "root"
     group: "bind"
     mode: "0644"
-  notify: "bind-changed"
+  notify: Reload bind
 
 - name: Add named.conf.blocked
   ansible.builtin.template:
@@ -47,7 +47,7 @@
     owner: "root"
     group: "bind"
     mode: "0644"
-  notify: "bind-changed"
+  notify: Reload bind
 
 - name: Add blocked.db
   ansible.builtin.copy:
@@ -56,7 +56,7 @@
     owner: "root"
     group: "bind"
     mode: "0644"
-  notify: "bind-changed"
+  notify: Reload bind
 
 - name: Start bind9
   ansible.builtin.service:

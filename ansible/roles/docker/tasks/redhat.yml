@@ -31,7 +31,7 @@
     mode: '0644'
     owner: root
     group: root
-  notify: docker-changed
+  notify: Restart docker
 
 - name: redhat | Start docker
   ansible.builtin.service:

@@ -4,7 +4,7 @@
     path: /etc/ssh/sshd_config
     regexp: '^PermitRootLogin'
     line: PermitRootLogin no
-  notify: ssh-changed
+  notify: Restart ssh
 
 - name: ssh | Remove root authorized_keys
   ansible.builtin.file:

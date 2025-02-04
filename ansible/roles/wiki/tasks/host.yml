@@ -112,4 +112,4 @@
     owner: root
     group: root
     mode: '0644'
-  notify: "Restart haproxy container"
+  notify: Restart haproxy container

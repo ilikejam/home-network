@@ -1,6 +1,5 @@
 ---
 - name: Reload bind
-  listen: bind-changed
   ansible.builtin.command:
     cmd: /usr/sbin/rndc reload
   changed_when: true
