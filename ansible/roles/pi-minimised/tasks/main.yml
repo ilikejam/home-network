@@ -86,6 +86,7 @@
       - libwayland-client0
       - wireless-tools
       - alsa-utils
+      - modemmanager
   notify: Run apt autoremove
 
 - name: Stop tty1
