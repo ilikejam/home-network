@@ -11,11 +11,17 @@
   ansible.builtin.shell:
     cmd: umask 077; wg genkey > /etc/wireguard/privatekey
     creates: /etc/wireguard/privatekey
+  tags:
+    - never
+    - wireguard-init
 
 - name: config | Generate public key
   ansible.builtin.shell:
     cmd: wg pubkey < /etc/wireguard/privatekey > /etc/wireguard/publickey
     creates: /etc/wireguard/publickey
+  tags:
+    - never
+    - wireguard-init
 
 - name: config | Create wg0.conf
   ansible.builtin.copy:
