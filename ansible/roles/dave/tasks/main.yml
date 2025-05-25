@@ -23,6 +23,12 @@
     QcWGmxVLKpJrWfx5k7zT3OXTMp1gxOZSeWuLxwEi44TkT+7+/0JBJ2OrammPRzBTZWeNmwmD4H48KLtNTPD4s8n5TdmbXSBj85gIIhYpxUr+MkNTOU/5LmkTh0ojhtpqZX+02iQkuzsiDZ4JqbF+EfL6N8L\
     ZqMuuJsl3dsulAN7GzyPAygp0WXHFdtSOzMfqY3KU+n+3QRXdTyBCGrvbDNPNxdLN5B4mrN5GUC84oSFVbg7hbsFmbra7YjD3t2ohG0tkMMQ=="
 
+- name: Add sshkey-dave-mba
+  ansible.posix.authorized_key:
+    user: dave
+    state: present
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM0ZnzRQg2gDT0Z4miORhNTE7dpSbes4NkAbLs0q6pqK dave@Davids-MacBook-Air.local"
+
 - name: Add sshkey-dave-juice-s22
   ansible.posix.authorized_key:
     user: dave
