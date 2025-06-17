@@ -2,7 +2,7 @@
 - name: docker | Deploy unifi container
   community.docker.docker_container:
     name: unifi
-    image: jacobalberty/unifi:v9.0.108
+    image: jacobalberty/unifi:v9.2.87
     restart_policy: always
     user: unifi
     mounts:
