@@ -14,7 +14,7 @@
 
 - name: Set docker GID fact
   ansible.builtin.set_fact:
-    docker_gid: "{{ getent_group.docker[1] }}"
+    docker_gid: "{{ ansible_facts['getent_group']['docker'][1] }}"
 
 - name: Create /var/dockerbind
   ansible.builtin.file:

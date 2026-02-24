@@ -1,6 +1,6 @@
 ---
 - name: Set OS vars
-  ansible.builtin.include_vars: '{{ item }}'
+  ansible.builtin.include_vars: "{{ item }}"
   with_first_found:
-    - '{{ ansible_os_family }}.yml'
+    - "{{ ansible_facts['os_family'] }}.yml"
     - default.yml

@@ -7,7 +7,7 @@
     name: "{{ item }}"
     state: stopped
     enabled: false
-  when: item in services
+  when: item in ansible_facts["services"]
   with_items:
     - "rpcbind"
     - "postfix"
