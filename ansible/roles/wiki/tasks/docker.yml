@@ -193,7 +193,7 @@
 - name: docker | Create haproxy container
   community.docker.docker_container:
     name: haproxy
-    image: haproxy:2.0
+    image: haproxy:3.2
     pull: true
     user: '{{ users["haproxy"]["uid"] }}:{{ users["haproxy"]["gid"] }}'
     mounts:

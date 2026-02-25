@@ -99,7 +99,7 @@ backend files
     server files files:8000 resolvers docker check
     http-request set-path "%[path,regsub(^/files/,/)]"
     http-response set-header content-disposition "attachment"
-    http-response del-header content-disposition if { var(txn.path) /files/ }
+    http-response del-header content-disposition if { var(txn.path) -m str /files/ }
 
 backend fileup
     stick-table type ipv6 size 1m expire 10s store http_req_rate(10s)
