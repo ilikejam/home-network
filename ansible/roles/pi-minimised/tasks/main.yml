@@ -68,7 +68,7 @@
 
 - name: Disable swapfile
   ansible.builtin.command: /sbin/dphys-swapfile swapoff
-  when: check_swap_result.stdout
+  when: check_swap_result.stdout | length > 0
   notify: Remove swap
   changed_when: true
 
