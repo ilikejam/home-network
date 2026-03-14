@@ -1,11 +1,10 @@
 [home]
 pi.home
-
-[unifi_controller]
-pi.home
+pi2.home
 
 [vpn_server]
 pi.home
 
 [rpi]
 pi.home
+pi2.home

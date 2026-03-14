@@ -18,12 +18,14 @@
   ansible.builtin.package:
     name: cpufrequtils
     state: present
+  when: ansible_facts['distribution_major_version'] | int < 13
 
 - name: Start cpufrequtils
   ansible.builtin.service:
     name: cpufrequtils
     state: started
     enabled: true
+  when: ansible_facts['distribution_major_version'] | int < 13
 
 - name: POE HAT overlay
   ansible.builtin.lineinfile:
@@ -59,16 +61,18 @@
   register: check_swap_result
   changed_when: false
   check_mode: false
+  when: ansible_facts['distribution_major_version'] | int < 13
 
 - name: Disable dphys-swapfile
   ansible.builtin.service:
     name: dphys-swapfile
     state: stopped
     enabled: false
+  when: ansible_facts['distribution_major_version'] | int < 13
 
 - name: Disable swapfile
   ansible.builtin.command: /sbin/dphys-swapfile swapoff
-  when: check_swap_result.stdout | length > 0
+  when: ansible_facts['distribution_major_version'] | int < 13 and check_swap_result.stdout | length > 0
   notify: Remove swap
   changed_when: true
 

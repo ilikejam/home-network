@@ -7,6 +7,6 @@
       - iftop
       - iotop
       - telnet
-      - dnsutils
+      - bind9-dnsutils
       - tcpdump
       - strace
