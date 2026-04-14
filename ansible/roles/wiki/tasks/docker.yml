@@ -30,10 +30,10 @@
 - name: docker | Stat haproxy.pem
   ansible.builtin.stat:
     path: /etc/letsencrypt/haproxy.pem
-  register: stat_haproxy_pem_result
+  register: wiki_stat_haproxy_pem_result
 
 - name: docker | Run letsencrypt-oneshot container
-  when: not stat_haproxy_pem_result.stat.exists
+  when: not wiki_stat_haproxy_pem_result.stat.exists
   community.docker.docker_container:
     name: letsencrypt-oneshot
     image: ilikejam/letsencrypt
@@ -174,7 +174,7 @@
 - name: docker | Create vaultwarden container
   community.docker.docker_container:
     name: vaultwarden
-    image: vaultwarden/server:1.35.4
+    image: vaultwarden/server:1.35.7
     pull: true
     user: '{{ users["vaultwarden"]["uid"] }}:{{ users["vaultwarden"]["gid"] }}'
     env:
