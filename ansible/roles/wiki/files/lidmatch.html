@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LidMatch — Find Your Perfect Seal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F7F3EC;
+    --warm-white: #FDFAF5;
+    --rust: #C4522A;
+    --rust-light: #E8845E;
+    --rust-pale: #FAE8DF;
+    --teal: #2A6E6A;
+    --teal-light: #3D9490;
+    --teal-pale: #DDF0EE;
+    --brown: #4A3728;
+    --brown-light: #7A6358;
+    --gold: #C4963A;
+    --gold-pale: #FAF0D7;
+    --text: #2C1F14;
+    --muted: #7A6A5E;
+    --border: rgba(74, 55, 40, 0.15);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--rust);
+    letter-spacing: -0.02em;
+  }
+
+  .logo span { color: var(--teal); font-style: italic; }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--rust); }
+
+  .nav-cta {
+    background: var(--rust);
+    color: white !important;
+    padding: 0.5rem 1.25rem;
+    border-radius: 100px;
+    transition: background 0.2s !important;
+  }
+
+  .nav-cta:hover { background: var(--brown) !important; color: white !important; }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: var(--rust-pale);
+    color: var(--rust);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(196, 82, 42, 0.2);
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    line-height: 1.15;
+    color: var(--brown);
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero h1 em {
+    color: var(--rust);
+    font-style: italic;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 520px;
+    margin: 0 auto 2.5rem;
+    font-weight: 300;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--rust);
+    color: white;
+    padding: 0.85rem 2rem;
+    border-radius: 100px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  .btn-primary:hover {
+    background: var(--brown);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--brown);
+    padding: 0.85rem 2rem;
+    border-radius: 100px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.2s;
+    border: 1.5px solid var(--border);
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--rust);
+    color: var(--rust);
+  }
+
+  /* ILLUSTRATION STRIP */
+  .tupperware-strip {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 1.5rem;
+    padding: 2rem;
+    overflow: hidden;
+  }
+
+  .tup-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .tup-item:nth-child(2) { animation-delay: 0.5s; }
+  .tup-item:nth-child(3) { animation-delay: 1s; }
+  .tup-item:nth-child(4) { animation-delay: 1.5s; }
+  .tup-item:nth-child(5) { animation-delay: 0.25s; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  .tup-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    background: var(--teal);
+    color: white;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    display: block;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    opacity: 0.75;
+    margin-top: 0.25rem;
+  }
+
+  /* HOW IT WORKS */
+  section {
+    padding: 5rem 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--rust);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    color: var(--brown);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .section-subtitle {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 500px;
+    font-weight: 300;
+    margin-bottom: 3rem;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .step-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .step-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(74, 55, 40, 0.08);
+  }
+
+  .step-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--rust-pale);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .step-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+
+  .step-title {
+    font-weight: 500;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--brown);
+  }
+
+  .step-desc {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* PERSONALITY QUIZ TEASER */
+  .quiz-section {
+    background: var(--gold-pale);
+    border-top: 1px solid rgba(196, 150, 58, 0.2);
+    border-bottom: 1px solid rgba(196, 150, 58, 0.2);
+    padding: 5rem 2rem;
+  }
+
+  .quiz-inner {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .quiz-card {
+    background: var(--warm-white);
+    border-radius: 20px;
+    padding: 2.5rem;
+    border: 1px solid rgba(196, 150, 58, 0.25);
+    margin-top: 2.5rem;
+  }
+
+  .quiz-question {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--brown);
+    margin-bottom: 1.5rem;
+  }
+
+  .quiz-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .quiz-option {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--brown);
+  }
+
+  .quiz-option:hover {
+    border-color: var(--gold);
+    background: var(--gold-pale);
+  }
+
+  .quiz-option.selected {
+    border-color: var(--rust);
+    background: var(--rust-pale);
+    color: var(--rust);
+  }
+
+  .quiz-option-icon {
+    display: block;
+    font-size: 1.5rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .quiz-progress {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  /* TESTIMONIALS */
+  .testimonials {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .testimonial-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.75rem;
+  }
+
+  .stars {
+    color: var(--gold);
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.1em;
+  }
+
+  .testimonial-text {
+    font-size: 0.95rem;
+    color: var(--brown-light);
+    line-height: 1.65;
+    margin-bottom: 1rem;
+    font-style: italic;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .avatar-rust { background: var(--rust-pale); color: var(--rust); }
+  .avatar-teal { background: var(--teal-pale); color: var(--teal); }
+  .avatar-gold { background: var(--gold-pale); color: var(--gold); }
+
+  .author-name { font-weight: 500; font-size: 0.9rem; color: var(--brown); }
+  .author-title { font-size: 0.8rem; color: var(--muted); }
+
+  /* MATCH REVEAL */
+  .match-section {
+    background: var(--teal-pale);
+    border-top: 1px solid rgba(42, 110, 106, 0.15);
+    border-bottom: 1px solid rgba(42, 110, 106, 0.15);
+    padding: 5rem 2rem;
+    text-align: center;
+  }
+
+  .match-reveal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2.5rem auto;
+    max-width: 500px;
+    flex-wrap: wrap;
+  }
+
+  .match-item {
+    background: var(--warm-white);
+    border: 1px solid rgba(42, 110, 106, 0.2);
+    border-radius: 16px;
+    padding: 1.5rem 2rem;
+    text-align: center;
+    flex: 1;
+    min-width: 140px;
+  }
+
+  .match-item-emoji { font-size: 2.5rem; margin-bottom: 0.5rem; display: block; }
+  .match-item-name { font-size: 0.85rem; font-weight: 500; color: var(--brown); }
+  .match-item-sub { font-size: 0.75rem; color: var(--muted); }
+
+  .match-connector {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--teal);
+    font-style: italic;
+    flex-shrink: 0;
+  }
+
+  .compatibility-bar {
+    max-width: 380px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .compat-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 0.35rem;
+  }
+
+  .compat-track {
+    background: rgba(42, 110, 106, 0.15);
+    border-radius: 100px;
+    height: 8px;
+    overflow: hidden;
+  }
+
+  .compat-fill {
+    height: 100%;
+    border-radius: 100px;
+    background: var(--teal);
+    width: 94%;
+    animation: growBar 1.5s ease-out forwards;
+  }
+
+  @keyframes growBar {
+    from { width: 0; }
+    to { width: 94%; }
+  }
+
+  /* PRICING */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .plan-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem;
+    transition: transform 0.2s;
+  }
+
+  .plan-card:hover { transform: translateY(-3px); }
+
+  .plan-card.featured {
+    border-color: var(--rust);
+    border-width: 2px;
+    background: var(--rust-pale);
+  }
+
+  .plan-badge {
+    display: inline-block;
+    background: var(--rust);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    border-radius: 100px;
+    margin-bottom: 1rem;
+  }
+
+  .plan-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--brown);
+    margin-bottom: 0.25rem;
+  }
+
+  .plan-price {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--rust);
+    line-height: 1;
+    margin: 0.75rem 0;
+  }
+
+  .plan-price span {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--muted);
+  }
+
+  .plan-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+
+  .plan-features {
+    list-style: none;
+    margin-bottom: 1.75rem;
+  }
+
+  .plan-features li {
+    font-size: 0.9rem;
+    color: var(--brown-light);
+    padding: 0.4rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  .plan-features li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--teal);
+    font-weight: 700;
+  }
+
+  .plan-features li.na {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  .plan-features li.na::before {
+    content: '×';
+    color: var(--muted);
+  }
+
+  /* FAQ */
+  .faq-list {
+    margin-top: 2rem;
+    max-width: 680px;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .faq-q {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 1.25rem 0;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--brown);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .faq-q:hover { color: var(--rust); }
+
+  .faq-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+    color: var(--muted);
+  }
+
+  .faq-a {
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.7;
+    padding-bottom: 1.25rem;
+    display: none;
+  }
+
+  .faq-item.open .faq-a { display: block; }
+  .faq-item.open .faq-icon { transform: rotate(45deg); color: var(--rust); }
+
+  /* CTA FOOTER */
+  .cta-footer {
+    background: var(--brown);
+    color: white;
+    text-align: center;
+    padding: 5rem 2rem;
+  }
+
+  .cta-footer h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .cta-footer h2 em { color: var(--rust-light); font-style: italic; }
+
+  .cta-footer p {
+    opacity: 0.7;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    font-weight: 300;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--text);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.8rem;
+  }
+
+  footer a { color: rgba(255,255,255,0.5); text-decoration: none; }
+  footer a:hover { color: white; }
+  footer .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+
+  @media (max-width: 600px) {
+    .stats-bar { gap: 2rem; }
+    .quiz-options { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Lid<span>Match</span></div>
+  <ul class="nav-links">
+    <li><a href="#how-it-works">How it works</a></li>
+    <li><a href="#testimonials">Stories</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#start" class="nav-cta">Start matching</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🏆 #1 Lid-to-Bowl Compatibility Service</div>
+  <h1>Every bowl deserves its <em>perfect</em> lid.</h1>
+  <p>Stop rummaging through the drawer. Our proprietary SealSense™ algorithm has reunited over 2 million lids with their matching bowls. Yours could be next.</p>
+  <div class="hero-actions">
+    <a href="#start" class="btn-primary">Find My Lid's Match</a>
+    <a href="#how-it-works" class="btn-secondary">Learn how it works</a>
+  </div>
+</div>
+
+<!-- TUPPERWARE ILLUSTRATION -->
+<div class="tupperware-strip">
+  <div class="tup-item">
+    <svg width="60" height="50" viewBox="0 0 60 50" fill="none">
+      <ellipse cx="30" cy="44" rx="26" ry="6" fill="#E8845E" opacity="0.3"/>
+      <rect x="8" y="18" width="44" height="26" rx="5" fill="#E8845E"/>
+      <ellipse cx="30" cy="18" rx="22" ry="5" fill="#C4522A"/>
+    </svg>
+    <div class="tup-label">Rectangular</div>
+  </div>
+  <div class="tup-item" style="animation-delay:0.5s">
+    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+      <ellipse cx="30" cy="54" rx="22" ry="5" fill="#2A6E6A" opacity="0.3"/>
+      <ellipse cx="30" cy="30" rx="22" ry="22" fill="#3D9490"/>
+      <ellipse cx="30" cy="12" rx="18" ry="5" fill="#2A6E6A"/>
+    </svg>
+    <div class="tup-label">Round</div>
+  </div>
+  <div class="tup-item" style="animation-delay:0.3s; transform: scale(1.15);">
+    <svg width="70" height="65" viewBox="0 0 70 65" fill="none">
+      <ellipse cx="35" cy="58" rx="28" ry="6" fill="#C4963A" opacity="0.3"/>
+      <rect x="8" y="22" width="54" height="36" rx="8" fill="#C4963A"/>
+      <rect x="10" y="10" width="50" height="16" rx="5" fill="#A07828"/>
+      <rect x="25" y="6" width="20" height="8" rx="3" fill="#A07828"/>
+    </svg>
+    <div class="tup-label">Large (Unmatched 💔)</div>
+  </div>
+  <div class="tup-item" style="animation-delay:1s">
+    <svg width="50" height="55" viewBox="0 0 50 55" fill="none">
+      <ellipse cx="25" cy="49" rx="19" ry="5" fill="#4A3728" opacity="0.2"/>
+      <rect x="5" y="20" width="40" height="28" rx="6" fill="#7A6358"/>
+      <ellipse cx="25" cy="20" rx="20" ry="5" fill="#4A3728"/>
+    </svg>
+    <div class="tup-label">Square</div>
+  </div>
+  <div class="tup-item" style="animation-delay:0.75s">
+    <svg width="55" height="42" viewBox="0 0 55 42" fill="none">
+      <ellipse cx="27" cy="37" rx="23" ry="5" fill="#C4522A" opacity="0.25"/>
+      <path d="M5 20 Q5 10 27 10 Q49 10 50 20 L50 32 Q50 38 27 38 Q5 38 5 32 Z" fill="#FAE8DF" stroke="#C4522A" stroke-width="1.5"/>
+      <ellipse cx="27" cy="20" rx="22" ry="6" fill="#C4522A" opacity="0.5"/>
+    </svg>
+    <div class="tup-label">Lid (Seeking bowl)</div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat">
+    <span class="stat-number">2.4M</span>
+    <div class="stat-label">Successful matches made</div>
+  </div>
+  <div class="stat">
+    <span class="stat-number">98.7%</span>
+    <div class="stat-label">Seal satisfaction rate</div>
+  </div>
+  <div class="stat">
+    <span class="stat-number">47s</span>
+    <div class="stat-label">Average match time</div>
+  </div>
+  <div class="stat">
+    <span class="stat-number">340K</span>
+    <div class="stat-label">Bowls still searching</div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="section-label">The process</div>
+  <h2 class="section-title">Matching, made simple.</h2>
+  <p class="section-subtitle">Our four-step SealSense™ process takes the guesswork out of lid compatibility for good.</p>
+  <div class="steps">
+    <div class="step-card">
+      <div class="step-number">01</div>
+      <div class="step-title">Submit your container</div>
+      <p class="step-desc">Upload three photos of your lidless bowl: top-down, side profile, and a close-up of the rim. Our AI analyses 47 dimensional data points.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-number">02</div>
+      <div class="step-title">Personality assessment</div>
+      <p class="step-desc">A 12-question quiz reveals your container's sealing style, temperature resilience, and dishwasher disposition. Compatibility is more than just size.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-number">03</div>
+      <div class="step-title">The SealSense™ algorithm</div>
+      <p class="step-desc">Our proprietary matching engine cross-references 18 million lid profiles — considering flange depth, flex rating, and brand heritage compatibility.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-number">04</div>
+      <div class="step-title">Receive your matches</div>
+      <p class="step-desc">We deliver a curated list of your top 5 lids, ranked by compatibility score. Order your match directly, or we'll check your drawer first.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PERSONALITY QUIZ TEASER -->
+<div class="quiz-section" id="start">
+  <div class="quiz-inner">
+    <div class="section-label">Quick assessment</div>
+    <h2 class="section-title">What kind of container are you?</h2>
+    <p class="section-subtitle">Answer a few questions to discover your lid compatibility profile.</p>
+
+    <div class="quiz-card">
+      <div class="quiz-progress">Question 1 of 12</div>
+      <div class="quiz-question">How do you handle a leftover pasta situation?</div>
+      <div class="quiz-options">
+        <button class="quiz-option" onclick="selectOption(this)">
+          <span class="quiz-option-icon">🍝</span>
+          I wrap cling film over the top and hope for the best.
+        </button>
+        <button class="quiz-option" onclick="selectOption(this)">
+          <span class="quiz-option-icon">📐</span>
+          I measure the bowl dimensions before committing.
+        </button>
+        <button class="quiz-option" onclick="selectOption(this)">
+          <span class="quiz-option-icon">🔀</span>
+          I transfer it to whatever has a lid, regardless of fit.
+        </button>
+        <button class="quiz-option" onclick="selectOption(this)">
+          <span class="quiz-option-icon">✨</span>
+          I use matching sets exclusively. Organisation is love.
+        </button>
+      </div>
+      <button class="btn-primary" style="width: 100%;" onclick="nextQuestion()">Next question →</button>
+    </div>
+  </div>
+</div>
+
+<!-- MATCH REVEAL -->
+<div class="match-section">
+  <div class="section-label" style="text-align:center">Success story spotlight</div>
+  <h2 class="section-title" style="text-align:center">This week's featured match</h2>
+  <p style="color:var(--muted); text-align:center; font-size:1rem;">94% compatibility score. Together at last.</p>
+
+  <div class="match-reveal">
+    <div class="match-item">
+      <span class="match-item-emoji">🥗</span>
+      <div class="match-item-name">Pyrex 6-cup Round</div>
+      <div class="match-item-sub">Rim diameter: 7.4"</div>
+    </div>
+    <div class="match-connector">♥</div>
+    <div class="match-item">
+      <span class="match-item-emoji">🔵</span>
+      <div class="match-item-name">Pyrex Blue Lid #723</div>
+      <div class="match-item-sub">Found in Sheffield, 2019</div>
+    </div>
+  </div>
+
+  <div class="compatibility-bar">
+    <div class="compat-label">
+      <span>Compatibility</span>
+      <span>94%</span>
+    </div>
+    <div class="compat-track">
+      <div class="compat-fill"></div>
+    </div>
+  </div>
+
+  <p style="color:var(--teal); font-size:0.9rem; text-align:center;">"After 3 years in the back of the drawer, we never thought this day would come." — the bowl</p>
+</div>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-label">Real stories</div>
+  <h2 class="section-title">Love, sealed with a click.</h2>
+  <p class="section-subtitle">From junk drawers to kitchen harmony — our members share their stories.</p>
+
+  <div class="testimonials">
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">"I had 14 lids and zero matching bowls. LidMatch found 11 of them in six minutes. The other three were 'beyond reunion' — they gave me closure."</p>
+      <div class="testimonial-author">
+        <div class="avatar avatar-rust">PM</div>
+        <div>
+          <div class="author-name">Patricia M.</div>
+          <div class="author-title">Home cook, Bristol</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">"My grandmother left me 40 years' worth of Tupperware. LidMatch reunited 26 pairs. I genuinely wept. Highly recommend the Premium Drawer Scan add-on."</p>
+      <div class="testimonial-author">
+        <div class="avatar avatar-teal">DK</div>
+        <div>
+          <div class="author-name">David K.</div>
+          <div class="author-title">Retired accountant, Edinburgh</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <div class="stars">★★★★☆</div>
+      <p class="testimonial-text">"The algorithm told me my bowl was 'emotionally incompatible' with square lids. I laughed. Then I thought about it. Then I agreed. Four stars."</p>
+      <div class="testimonial-author">
+        <div class="avatar avatar-gold">SR</div>
+        <div>
+          <div class="author-name">Sunita R.</div>
+          <div class="author-title">Nutritionist, Manchester</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" style="background: var(--warm-white); max-width: 100%; padding: 5rem 2rem;">
+  <div style="max-width: 1000px; margin: 0 auto;">
+    <div class="section-label">Plans</div>
+    <h2 class="section-title">Choose your path to sealing happiness</h2>
+    <p class="section-subtitle">Every container deserves a chance at a lasting match.</p>
+
+    <div class="pricing-grid">
+      <div class="plan-card">
+        <div class="plan-name">Solo Seeker</div>
+        <div class="plan-price">Free</div>
+        <p class="plan-desc">For the casually curious container. One match, one chance.</p>
+        <ul class="plan-features">
+          <li>1 bowl profile</li>
+          <li>3 lid suggestions</li>
+          <li>Basic rim analysis</li>
+          <li class="na">Personality quiz</li>
+          <li class="na">Drawer scan</li>
+          <li class="na">Grief counselling (lid loss)</li>
+        </ul>
+        <a href="#" class="btn-secondary" style="display: block; text-align: center;">Get started</a>
+      </div>
+
+      <div class="plan-card featured">
+        <div class="plan-badge">Most popular</div>
+        <div class="plan-name">Committed Collector</div>
+        <div class="plan-price">£4.99 <span>/ month</span></div>
+        <p class="plan-desc">For the household that means business. Unlimited bowls, unlimited hope.</p>
+        <ul class="plan-features">
+          <li>Unlimited bowl profiles</li>
+          <li>Full SealSense™ matching</li>
+          <li>12-question personality quiz</li>
+          <li>Drawer scan (up to 40 items)</li>
+          <li>Priority lid sourcing</li>
+          <li class="na">Grief counselling (lid loss)</li>
+        </ul>
+        <a href="#" class="btn-primary" style="display: block; text-align: center;">Start free trial</a>
+      </div>
+
+      <div class="plan-card">
+        <div class="plan-name">Estate &amp; Legacy</div>
+        <div class="plan-price">£14.99 <span>/ month</span></div>
+        <p class="plan-desc">For inherited collections, hoarders, and those who feel deeply.</p>
+        <ul class="plan-features">
+          <li>Everything in Committed</li>
+          <li>Full drawer + cupboard scan</li>
+          <li>Brand genealogy research</li>
+          <li>3D rim modelling</li>
+          <li>Certified grief counselling</li>
+          <li>White-glove lid procurement</li>
+        </ul>
+        <a href="#" class="btn-secondary" style="display: block; text-align: center;">Contact us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-label">Questions</div>
+  <h2 class="section-title">Frequently asked</h2>
+
+  <div class="faq-list">
+    <div class="faq-item open">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        How does SealSense™ actually work?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">SealSense™ uses a proprietary blend of photogrammetric rim analysis, brand DNA profiling, and what our engineers call "flange intuition." We've trained on 18 million lid-bowl pairs across 340 manufacturers and 80 years of plastic container history. The model also considers emotional compatibility, which is harder to explain but our users report it matters enormously.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        What if my lid is from a brand that no longer exists?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">We specialise in legacy matching. Our Vintage Lid Archive covers over 2,400 discontinued brands, including the much-lamented Tupperware Corp. (2023), Swan Brand, and the mysterious "No Brand" beige range common in UK drawers circa 1987–2002. If we can't find a match, we offer a respectful Certificate of Unmatchability and a 10% discount on our 3D-printed custom lid service.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Is "close enough" ever good enough?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">Our clinical data suggests that a lid which is merely "close enough" leads to 73% more spillage events, 41% more fridge-drawer odour incidents, and — perhaps most importantly — a persistent low-grade anxiety that our therapist partners describe as "lid malaise." We believe every container deserves a proper seal, not a compromise.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        What happens if my bowl is "emotionally unavailable"?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">This occurs when a bowl has previously experienced a cracked, warped, or lost lid and has developed what our algorithm flags as a "protective rim tension." In these cases, we recommend our four-session Bowl Readiness Programme before proceeding with matching. It's gentle, it's guided, and it works.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Can I match a lid first and find a bowl for it?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">Absolutely. We are firmly lid-inclusive. Approximately 38% of our users begin the process from the lid's perspective. Some would argue lids are the ones doing all the work anyway — they have to fit, flex, and seal. They deserve representation, and at LidMatch, they have it.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FOOTER -->
+<div class="cta-footer">
+  <h2>Your perfect seal is <em>out there.</em></h2>
+  <p>Don't let it spend another year in someone else's drawer.</p>
+  <a href="#start" class="btn-primary" style="font-size: 1.1rem; padding: 1rem 2.5rem;">Begin your match today</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a href="#">About LidMatch</a>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms of Sealing</a>
+    <a href="#">Lid Grief Support</a>
+    <a href="#">Press</a>
+    <a href="#">Careers</a>
+  </div>
+  <p>© 2026 LidMatch Ltd. All rights reserved. SealSense™ is a trademark of LidMatch Ltd. No lids were harmed in the making of this website. Results may vary. Compatibility scores are for entertainment purposes only and do not constitute a guarantee of airtightness.</p>
+</footer>
+
+<script>
+  function selectOption(el) {
+    el.closest('.quiz-options').querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  const questions = [
+    { q: "How do you handle a leftover pasta situation?", opts: ["🍝 I wrap cling film and hope", "📐 I measure before committing", "🔀 I transfer regardless of fit", "✨ I use matching sets exclusively"] },
+    { q: "How would you describe your rim profile?", opts: ["🔵 Classic round — timeless, reliable", "🟦 Square — efficient, no-nonsense", "🔶 Oval — adaptable, people-pleasing", "🌀 Irregular — misunderstood, unique"] },
+    { q: "What's your relationship with the dishwasher?", opts: ["💧 Top rack only, always", "🔥 Bottom rack — I like a challenge", "🤲 Hand wash only, thank you", "🤷 Whatever fits"] },
+    { q: "A lid from a different brand fits you. Do you commit?", opts: ["❤️ Love is love. We make it work.", "🤔 Only if the seal is truly airtight", "😤 Never. Brand loyalty is everything.", "📊 I run a two-week trial first"] },
+  ];
+
+  let currentQ = 0;
+
+  function nextQuestion() {
+    currentQ = (currentQ + 1) % questions.length;
+    const card = document.querySelector('.quiz-card');
+    const q = questions[currentQ];
+    card.querySelector('.quiz-question').textContent = q.q;
+    card.querySelector('.quiz-progress').textContent = `Question ${currentQ + 1} of 12`;
+    const opts = card.querySelectorAll('.quiz-option');
+    opts.forEach((o, i) => {
+      const parts = q.opts[i].split(' ');
+      o.classList.remove('selected');
+      o.innerHTML = `<span class="quiz-option-icon">${parts[0]}</span>${parts.slice(1).join(' ')}`;
+    });
+  }
+
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+</script>
+
+</body>
+</html>

@@ -113,3 +113,19 @@
     group: root
     mode: '0644'
   notify: Restart haproxy container
+
+- name: host | Create /var/dockerbind/lidmatch
+  ansible.builtin.file:
+    path: /var/dockerbind/lidmatch
+    state: directory
+    mode: '0755'
+    owner: root
+    group: root
+
+- name: host | Create /var/dockerbind/lidmatch/lidmatch.html
+  ansible.builtin.copy:
+    dest: /var/dockerbind/lidmatch/lidmatch.html
+    src: lidmatch.html
+    mode: '0644'
+    owner: root
+    group: root

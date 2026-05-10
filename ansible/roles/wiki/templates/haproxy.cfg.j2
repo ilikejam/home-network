@@ -58,8 +58,11 @@ frontend https_in
     acl files_pth path_beg /files/
     acl wiki_hdr hdr(host) -i {{ wiki_domain }}
     acl vaultwarden_hdr hdr(host) -i {{ vaultwarden_domain }}
+    acl lidmatch_hdr hdr(host) -i {{ lidmatch_domain }}
     acl upload_pth path /upload
     acl newfile_pth path /newfile
+
+    http-request set-path /lidmatch.html if lidmatch_hdr
 
     use_backend bare_domain_redirect if bare_domain_hdr
     use_backend bare_files_redirect if bare_files_pth
@@ -71,6 +74,7 @@ frontend https_in
     use_backend fileup if newfile_pth METH_POST
     use_backend wiki if wiki_hdr METH_GET
     use_backend vaultwarden if vaultwarden_hdr
+    use_backend lidmatch if lidmatch_hdr
 
 listen bare_domain_redirect_listener
     bind 127.0.0.1:8001
@@ -109,3 +113,6 @@ backend fileup
 
 backend vaultwarden
     server vaultwarden vaultwarden:8000 resolvers docker check
+
+backend lidmatch
+    server lidmatch lidmatch:8000 resolvers docker check

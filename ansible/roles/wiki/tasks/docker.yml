@@ -27,6 +27,10 @@
   community.docker.docker_network:
     name: vaultwarden
 
+- name: docker | Create lidmatch network
+  community.docker.docker_network:
+    name: lidmatch
+
 - name: docker | Stat haproxy.pem
   ansible.builtin.stat:
     path: /etc/letsencrypt/haproxy.pem
@@ -47,7 +51,7 @@
     published_ports: 80:8000
     command: >
       bash -c 'certbot certonly --standalone --preferred-challenges http-01 --http-01-port 8000 --work-dir /var/tmp --logs-dir /var/tmp --agree-tos
-      --non-interactive --cert-name this -m dave@davidstark.name -d {{ wiki_domain }},{{ vaultwarden_domain }} && cat /etc/letsencrypt/live/this/fullchain.pem
+      --non-interactive --cert-name this -m dave@davidstark.name -d {{ wiki_domain }},{{ vaultwarden_domain }},{{ lidmatch_domain }} && cat /etc/letsencrypt/live/this/fullchain.pem
       /etc/letsencrypt/live/this/privkey.pem  > /etc/letsencrypt/haproxy.pem'
     restart_policy: "no"
     detach: false
@@ -190,6 +194,24 @@
     exposed_ports: ["8000"]
     networks_cli_compatible: true
 
+- name: docker | Create lidmatch container
+  community.docker.docker_container:
+    name: lidmatch
+    image: python:3-slim
+    pull: true
+    user: '{{ users["lidmatch"]["uid"] }}:{{ users["lidmatch"]["gid"] }}'
+    mounts:
+      - type: bind
+        source: /var/dockerbind/lidmatch
+        target: /serve
+        read_only: true
+    networks:
+      - name: files
+    restart_policy: always
+    exposed_ports: ["8000"]
+    command: "bash -c 'cd /serve && python -m http.server 8000'"
+    networks_cli_compatible: true
+
 - name: docker | Create haproxy container
   community.docker.docker_container:
     name: haproxy
@@ -216,4 +238,5 @@
       - name: files
       - name: fileup
       - name: vaultwarden
+      - name: lidmatch
     networks_cli_compatible: true

@@ -19,3 +19,6 @@ users:
   vaultwarden:
     uid: 2006
     gid: 2006
+  lidmatch:
+    uid: 2007
+    gid: 2007
