@@ -206,7 +206,7 @@
         target: /serve
         read_only: true
     networks:
-      - name: files
+      - name: lidmatch
     restart_policy: always
     exposed_ports: ["8000"]
     command: "bash -c 'cd /serve && python -m http.server 8000'"
