@@ -178,7 +178,7 @@
 - name: docker | Create vaultwarden container
   community.docker.docker_container:
     name: vaultwarden
-    image: vaultwarden/server:1.36.0
+    image: vaultwarden/server:1.37.2
     pull: true
     user: '{{ users["vaultwarden"]["uid"] }}:{{ users["vaultwarden"]["gid"] }}'
     env:
