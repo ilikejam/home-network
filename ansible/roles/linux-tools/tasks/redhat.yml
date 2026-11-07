@@ -5,7 +5,7 @@
     name:
       - lsof
       - iftop
-      - iotop
+      - iotop-c
       - telnet
       - bind-utils
       - tcpdump
